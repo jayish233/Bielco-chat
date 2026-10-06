@@ -23,13 +23,17 @@ class AuthFormController extends Notifier<AuthFormState> {
     try {
       await action();
     } on AuthFailure catch (failure) {
-      state = AuthFormState(submitting: true, formError: failure.message);
+      if (ref.mounted) {
+        state = AuthFormState(submitting: true, formError: failure.message);
+      }
     } catch (error, stack) {
       debugPrint('Unexpected auth error: $error\n$stack');
-      state = AuthFormState(
-        submitting: true,
-        formError: const AuthFailure(AuthFailureCode.unknown).message,
-      );
+      if (ref.mounted) {
+        state = AuthFormState(
+          submitting: true,
+          formError: const AuthFailure(AuthFailureCode.unknown).message,
+        );
+      }
     } finally {
       // The provider may have been disposed while the action was awaiting.
       if (ref.mounted) {

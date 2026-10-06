@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:chatapp/core/providers.dart';
 import 'package:chatapp/core/router.dart';
 import 'package:chatapp/core/theme/app_theme.dart';
+import 'package:chatapp/core/ui/relay_button.dart';
 import 'package:chatapp/features/auth/domain/auth_failure.dart';
 import 'package:chatapp/features/auth/ui/sign_in_screen.dart';
 import 'package:flutter/material.dart';
@@ -115,12 +116,39 @@ void main() {
     await _fill(t, 'a@b.co', 'password1');
     await t.tap(find.text('Sign in'));
     await t.pump();
-    // The label is replaced by a spinner while submitting; tap the button.
-    await t.tap(find.byType(InkWell).first, warnIfMissed: false);
+    await t.tap(find.byType(RelayButton));
     await t.pump();
     expect(auth.signInCalls, hasLength(1));
     gate.complete();
     await t.pump();
+  });
+
+  testWidgets('keyboard done submits once, ignores repeat while in flight', (
+    t,
+  ) async {
+    final auth = await _pump(t);
+    final gate = Completer<void>();
+    auth.signInGate = gate;
+    await _fill(t, '  a@b.co ', 'password1');
+    await t.showKeyboard(find.byType(TextField).at(1));
+    await t.testTextInput.receiveAction(TextInputAction.done);
+    await t.pump();
+    expect(auth.signInCalls, hasLength(1));
+    expect(auth.signInCalls.single.email, 'a@b.co');
+    await t.testTextInput.receiveAction(TextInputAction.done);
+    await t.pump();
+    expect(auth.signInCalls, hasLength(1));
+    gate.complete();
+    await t.pump();
+  });
+
+  testWidgets('email field disables autocorrect and suggestions', (t) async {
+    await _pump(t);
+    final email = t.widget<TextField>(find.byType(TextField).at(0));
+    expect(email.autocorrect, isFalse);
+    expect(email.enableSuggestions, isFalse);
+    final password = t.widget<TextField>(find.byType(TextField).at(1));
+    expect(password.autocorrect, isFalse);
   });
 
   testWidgets('brand panel only at >=900px', (t) async {

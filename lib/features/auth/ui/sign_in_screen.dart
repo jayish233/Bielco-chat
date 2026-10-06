@@ -83,6 +83,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 label: 'Email',
                 controller: _email,
                 errorText: emailError,
+                autocorrect: false,
                 keyboardType: TextInputType.emailAddress,
                 autofillHints: const [AutofillHints.email],
                 textInputAction: TextInputAction.next,

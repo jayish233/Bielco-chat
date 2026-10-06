@@ -14,6 +14,7 @@ class RelayTextField extends StatefulWidget {
     this.helperText,
     this.prefix,
     this.obscure = false,
+    this.autocorrect,
     this.keyboardType,
     this.autofillHints,
     this.textInputAction,
@@ -30,6 +31,9 @@ class RelayTextField extends StatefulWidget {
   final String? helperText;
   final Widget? prefix;
   final bool obscure;
+
+  /// Controls autocorrect and suggestions; defaults to `!obscure`.
+  final bool? autocorrect;
   final TextInputType? keyboardType;
   final Iterable<String>? autofillHints;
   final TextInputAction? textInputAction;
@@ -118,8 +122,9 @@ class _RelayTextFieldState extends State<RelayTextField> {
                         enabled: widget.enabled,
                         readOnly: widget.readOnly,
                         obscureText: widget.obscure && _hidden,
-                        autocorrect: !widget.obscure,
-                        enableSuggestions: !widget.obscure,
+                        autocorrect: widget.autocorrect ?? !widget.obscure,
+                        enableSuggestions:
+                            widget.autocorrect ?? !widget.obscure,
                         keyboardType: widget.keyboardType,
                         autofillHints: widget.autofillHints,
                         textInputAction: widget.textInputAction,
