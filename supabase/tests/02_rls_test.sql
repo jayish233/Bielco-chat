@@ -1,5 +1,5 @@
 begin;
-select plan(24);
+select plan(29);
 
 -- Test helper (invoker rights, so RLS applies): rows affected by a DML statement.
 -- Data-modifying CTEs are not allowed inside a subselect, hence this wrapper.
@@ -55,7 +55,6 @@ select set_config('request.jwt.claims', json_build_object('sub', '00000000-0000-
 select lives_ok($$insert into messages (conversation_id, body) values ('00000000-0000-0000-0000-0000000000c1', 'hi')$$, 'member can post');
 select throws_ok($$insert into messages (conversation_id, sender_id, body) values ('00000000-0000-0000-0000-0000000000c1', '00000000-0000-0000-0000-000000000001', 'spoof')$$, '42501', null, 'cannot post as someone else');
 select throws_ok($$insert into messages (conversation_id, body, created_at) values ('00000000-0000-0000-0000-0000000000c1', 'x', now() - interval '1 day')$$, '42501', null, 'cannot backdate');
-select throws_ok($$insert into messages (conversation_id, body, reply_to_id) values ('00000000-0000-0000-0000-0000000000c1', 'x', '00000000-0000-0000-0000-0000000000a3')$$, '42501', null, 'reply_to must be same conversation');
 select is(public.t_rows_affected($q$update messages set body = 'hacked' where id = '00000000-0000-0000-0000-0000000000a1'$q$), 0::bigint, 'non-sender cannot edit');
 select throws_ok($$update messages set conversation_id = '00000000-0000-0000-0000-0000000000d1' where id = '00000000-0000-0000-0000-0000000000a2'$$, '42501', null, 'cannot move a message');
 select throws_ok($$insert into conversation_members (conversation_id, user_id) values ('00000000-0000-0000-0000-0000000000c1', '00000000-0000-0000-0000-000000000003')$$, '42501', null, 'non-admin cannot add members');
@@ -71,8 +70,12 @@ reset role;
 set local role authenticated;
 select set_config('request.jwt.claims', json_build_object('sub', '00000000-0000-0000-0000-000000000001', 'role', 'authenticated')::text, true);
 
-select lives_ok($$update messages set body = 'edited' where id = '00000000-0000-0000-0000-0000000000a1'$$, 'sender can edit');
-select lives_ok($$update messages set deleted_at = now(), body = null where id = '00000000-0000-0000-0000-0000000000a1'$$, 'sender can soft-delete');
+select lives_ok($$insert into messages (id, conversation_id, body, reply_to_id) values ('00000000-0000-0000-0000-0000000000a4', '00000000-0000-0000-0000-0000000000c1', 'reply', '00000000-0000-0000-0000-0000000000a2')$$, 'member can reply in same conversation');
+select is((select count(*) from messages where id = '00000000-0000-0000-0000-0000000000a4' and reply_to_id = '00000000-0000-0000-0000-0000000000a2'), 1::bigint, 'reply row stored');
+select throws_ok($$insert into messages (conversation_id, body, reply_to_id) values ('00000000-0000-0000-0000-0000000000c1', 'x', '00000000-0000-0000-0000-0000000000a3')$$, '42501', null, 'reply_to must be same conversation');
+select ok(not has_table_privilege('authenticated', 'public.messages', 'TRUNCATE'), 'authenticated cannot TRUNCATE messages');
+select is(public.t_rows_affected($q$update messages set body = 'edited' where id = '00000000-0000-0000-0000-0000000000a1'$q$), 1::bigint, 'sender can edit');
+select is(public.t_rows_affected($q$update messages set deleted_at = now(), body = null where id = '00000000-0000-0000-0000-0000000000a1'$q$), 1::bigint, 'sender can soft-delete');
 select is(public.t_rows_affected($q$update messages set body = 'undelete' where id = '00000000-0000-0000-0000-0000000000a1'$q$), 0::bigint, 'deleted message cannot be edited');
 select lives_ok($$insert into conversation_members (conversation_id, user_id) values ('00000000-0000-0000-0000-0000000000c1', '00000000-0000-0000-0000-000000000003')$$, 'admin adds member to group');
 select throws_ok($$insert into conversation_members (conversation_id, user_id) values ('00000000-0000-0000-0000-0000000000d1', '00000000-0000-0000-0000-000000000002')$$, '42501', null, 'nobody adds members to a DM');
@@ -84,6 +87,7 @@ set local role authenticated;
 select set_config('request.jwt.claims', json_build_object('sub', '00000000-0000-0000-0000-000000000002', 'role', 'authenticated')::text, true);
 
 select is(public.t_rows_affected($q$delete from conversation_members where conversation_id = '00000000-0000-0000-0000-0000000000c1' and user_id = '00000000-0000-0000-0000-000000000002'$q$), 1::bigint, 'member can leave group');
+select is(public.t_rows_affected($q$update messages set body = 'late edit' where id = '00000000-0000-0000-0000-0000000000a2'$q$), 0::bigint, 'ex-member cannot edit own old message');
 
 -- as anon -----------------------------------------------------------------------
 reset role;

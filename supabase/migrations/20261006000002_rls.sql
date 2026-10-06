@@ -23,6 +23,11 @@ grant insert (message_id, user_id, emoji) on public.message_reactions to authent
 grant insert (user_id, token, platform) on public.device_tokens to authenticated;
 grant update (user_id, platform, updated_at) on public.device_tokens to authenticated;
 
+revoke truncate, references, trigger on
+  public.profiles, public.conversations, public.conversation_members,
+  public.messages, public.message_reactions, public.device_tokens
+from anon, authenticated;
+
 -- profiles
 create policy profiles_select on public.profiles for select to authenticated using (true);
 create policy profiles_update on public.profiles for update to authenticated
@@ -57,10 +62,10 @@ create policy messages_insert on public.messages for insert to authenticated
     sender_id = auth.uid() and public.is_member(conversation_id)
     and (reply_to_id is null or exists (
       select 1 from public.messages r
-      where r.id = reply_to_id and r.conversation_id = messages.conversation_id))
+      where r.id = messages.reply_to_id and r.conversation_id = messages.conversation_id))
   );
 create policy messages_update on public.messages for update to authenticated
-  using (sender_id = auth.uid() and deleted_at is null)
+  using (sender_id = auth.uid() and deleted_at is null and public.is_member(conversation_id))
   with check (sender_id = auth.uid());
 
 -- message_reactions
