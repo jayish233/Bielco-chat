@@ -26,7 +26,11 @@ final authStatusProvider = StreamProvider<AuthStatus>((ref) async* {
   yield* repo.statusChanges();
 });
 
+/// Only meaningful while signed in (the profile screen is only shown then).
+/// When signed out it fails with `StateError('Not signed in')` instead of
+/// querying; it refetches whenever the auth status changes.
 final myProfileProvider = FutureProvider<Profile>((ref) async {
-  ref.watch(authStatusProvider);
+  final status = await ref.watch(authStatusProvider.future);
+  if (status == AuthStatus.signedOut) throw StateError('Not signed in');
   return ref.watch(profileRepositoryProvider).fetchMyProfile();
 });

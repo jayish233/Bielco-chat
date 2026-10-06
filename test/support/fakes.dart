@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatapp/features/auth/data/auth_repository.dart';
+import 'package:chatapp/features/auth/domain/auth_failure.dart';
 import 'package:chatapp/features/auth/domain/validators.dart';
 import 'package:chatapp/features/profile/data/profile_repository.dart';
 import 'package:chatapp/features/profile/domain/profile.dart';
@@ -30,6 +31,7 @@ class FakeAuthRepository implements AuthRepository {
   @override
   AuthStatus get currentStatus => _status;
 
+  /// Fresh stream per call, changes only (like the real repository).
   @override
   Stream<AuthStatus> statusChanges() => _controller.stream;
 
@@ -54,6 +56,7 @@ class FakeAuthRepository implements AuthRepository {
     final gate = signInGate;
     if (gate != null) await gate.future;
     _throwIfError();
+    currentEmail = email.trim();
     emit(AuthStatus.signedIn);
   }
 
@@ -97,7 +100,9 @@ class FakeProfileRepository implements ProfileRepository {
   Future<Profile> fetchMyProfile() async {
     final e = loadError;
     if (e != null) throw e;
-    return profile!;
+    final p = profile;
+    if (p == null) throw StateError('No profile set on FakeProfileRepository');
+    return p;
   }
 
   @override
@@ -105,12 +110,16 @@ class FakeProfileRepository implements ProfileRepository {
     String? displayName,
     String? username,
   }) async {
+    updateCalls.add((displayName: displayName, username: username));
     final e = nextError;
     if (e != null) {
       nextError = null;
       throw e;
     }
-    updateCalls.add((displayName: displayName, username: username));
+    if (username != null &&
+        takenUsernames.contains(normalizeUsername(username))) {
+      throw const AuthFailure(AuthFailureCode.usernameTaken);
+    }
     return profile = profile!.copyWith(
       displayName: displayName,
       username: username == null ? null : normalizeUsername(username),

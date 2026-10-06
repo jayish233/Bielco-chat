@@ -9,9 +9,12 @@ enum AuthFailureCode {
 }
 
 class AuthFailure implements Exception {
-  const AuthFailure(this.code);
+  const AuthFailure(this.code, [this.cause]);
 
   final AuthFailureCode code;
+
+  /// The underlying error, when known (kept for diagnostics).
+  final Object? cause;
 
   String get message => switch (code) {
     AuthFailureCode.invalidCredentials => 'Email or password is incorrect.',

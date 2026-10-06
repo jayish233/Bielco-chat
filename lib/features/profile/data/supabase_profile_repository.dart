@@ -26,8 +26,8 @@ class SupabaseProfileRepository implements ProfileRepository {
           .eq('id', _uid)
           .single();
       return Profile.fromJson(row);
-    } catch (e) {
-      throw mapAuthError(e);
+    } catch (e, st) {
+      Error.throwWithStackTrace(mapAuthError(e), st);
     }
   }
 
@@ -49,8 +49,8 @@ class SupabaseProfileRepository implements ProfileRepository {
           .select()
           .single();
       return Profile.fromJson(row);
-    } catch (e) {
-      throw mapAuthError(e);
+    } catch (e, st) {
+      Error.throwWithStackTrace(mapAuthError(e), st);
     }
   }
 
@@ -62,8 +62,8 @@ class SupabaseProfileRepository implements ProfileRepository {
         params: {'name': normalizeUsername(username)},
       );
       return res == true;
-    } catch (e) {
-      throw mapAuthError(e);
+    } catch (e, st) {
+      Error.throwWithStackTrace(mapAuthError(e), st);
     }
   }
 }

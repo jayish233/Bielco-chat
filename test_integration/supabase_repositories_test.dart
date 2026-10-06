@@ -155,4 +155,30 @@ void main() {
       _failure(AuthFailureCode.network),
     );
   });
+
+  test(
+    'real duplicate-username race (pre-check bypassed) -> usernameTaken',
+    () async {
+      final name = 'race_${_s()}';
+      final other = _client();
+      addTearDown(other.dispose);
+      await other.auth.signUp(
+        email: 'm1-${_n()}@example.com',
+        password: _pw,
+        data: {'username': name, 'display_name': 'First'},
+      );
+      Object? error;
+      try {
+        await client.auth.signUp(
+          email: 'm1-${_n()}@example.com',
+          password: _pw,
+          data: {'username': name, 'display_name': 'Second'},
+        );
+      } catch (e) {
+        error = e;
+      }
+      expect(error, isNotNull);
+      expect(mapAuthError(error!).code, AuthFailureCode.usernameTaken);
+    },
+  );
 }
