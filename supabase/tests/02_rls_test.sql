@@ -1,5 +1,5 @@
 begin;
-select plan(29);
+select plan(28);
 
 -- Test helper (invoker rights, so RLS applies): rows affected by a DML statement.
 -- Data-modifying CTEs are not allowed inside a subselect, hence this wrapper.
