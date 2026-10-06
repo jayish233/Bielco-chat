@@ -15,6 +15,13 @@ class AuthFormController extends Notifier<AuthFormState> {
   @override
   AuthFormState build() => const AuthFormState();
 
+  /// Drops a stale [AuthFormState.formError] (e.g. left by another screen that
+  /// shares this provider) without touching an in-flight submit.
+  void clearError() {
+    if (state.formError == null) return;
+    state = AuthFormState(submitting: state.submitting);
+  }
+
   /// Runs [action] unless a submit is already in flight. [AuthFailure]s
   /// become [AuthFormState.formError]; other errors show the generic message.
   Future<void> run(Future<void> Function() action) async {
@@ -27,7 +34,7 @@ class AuthFormController extends Notifier<AuthFormState> {
         state = AuthFormState(submitting: true, formError: failure.message);
       }
     } catch (error, stack) {
-      debugPrint('Unexpected auth error: $error\n$stack');
+      if (kDebugMode) debugPrint('Unexpected auth error: $error\n$stack');
       if (ref.mounted) {
         state = AuthFormState(
           submitting: true,

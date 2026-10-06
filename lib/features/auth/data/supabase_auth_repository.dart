@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io' show SocketException;
 
-import 'package:flutter/foundation.dart' show debugPrint;
+import 'package:flutter/foundation.dart' show debugPrint, kDebugMode;
 import 'package:http/http.dart' show ClientException;
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -58,7 +58,7 @@ AuthFailure mapAuthError(Object error) {
 }
 
 AuthFailure _unknown(Object error) {
-  debugPrint('AuthFailure.unknown caused by: $error');
+  if (kDebugMode) debugPrint('AuthFailure.unknown caused by: $error');
   return AuthFailure(AuthFailureCode.unknown, error);
 }
 

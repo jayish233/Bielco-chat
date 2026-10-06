@@ -132,6 +132,10 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
   @override
   void initState() {
     super.initState();
+    // The form-state provider is shared across auth screens; start clean.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) ref.read(authFormControllerProvider.notifier).clearError();
+    });
     _baseName = widget.profile.displayName;
     _baseUsername = widget.profile.username;
     _name = TextEditingController(text: _baseName);

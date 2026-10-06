@@ -29,6 +29,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   bool _submitted = false;
 
   @override
+  void initState() {
+    super.initState();
+    // The form-state provider is shared across auth screens; start clean.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) ref.read(authFormControllerProvider.notifier).clearError();
+    });
+  }
+
+  @override
   void dispose() {
     _email.dispose();
     _password.dispose();

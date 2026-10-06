@@ -35,6 +35,15 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
   String? _usernameError;
 
   @override
+  void initState() {
+    super.initState();
+    // The form-state provider is shared across auth screens; start clean.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) ref.read(authFormControllerProvider.notifier).clearError();
+    });
+  }
+
+  @override
   void dispose() {
     _name.dispose();
     _username.dispose();

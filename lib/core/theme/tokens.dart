@@ -24,6 +24,18 @@ abstract final class RelayColors {
   static const Color darkSurface = Color(0xFF17171A);
   static const Color darkBorder = Color(0xFF2A2A2F);
   static const Color darkTextMuted = Color(0xFFB4B4BB);
+  static const Color darkSurfaceAlt = Color(0xFF111113);
+  static const Color darkInk = Color(0xFFF4F4F5);
+  static const Color darkTextSecondary = Color(0xFFD4D4D8);
+  static const Color darkTextSubtle = Color(0xFFA1A1A8);
+  static const Color darkBorderStrong = Color(0xFF3A3A40);
+  static const Color darkHairline = Color(0xFF24242A);
+  static const Color darkFillMuted = Color(0xFF1F1F23);
+  static const Color darkAccentStrong = Color(0xFF8FA6FF);
+  static const Color darkAccentSoft = Color(0xFF1A2250);
+
+  /// Not in tokens.css; chosen for contrast on dark surfaces.
+  static const Color darkDangerText = Color(0xFFF28B82);
 
   static const List<Color> avatarTints = [
     Color(0xFFDDE6F7),
