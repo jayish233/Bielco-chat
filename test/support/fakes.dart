@@ -96,6 +96,12 @@ class FakeProfileRepository implements ProfileRepository {
   Set<String> takenUsernames = {};
   final List<({String? displayName, String? username})> updateCalls = [];
 
+  /// Normalized values passed to [isUsernameAvailable], in call order.
+  final List<String> availabilityCalls = [];
+
+  /// When set for a normalized value, its availability check waits on the gate.
+  final Map<String, Completer<bool>> availabilityGates = {};
+
   @override
   Future<Profile> fetchMyProfile() async {
     final e = loadError;
@@ -127,6 +133,11 @@ class FakeProfileRepository implements ProfileRepository {
   }
 
   @override
-  Future<bool> isUsernameAvailable(String username) async =>
-      !takenUsernames.contains(normalizeUsername(username));
+  Future<bool> isUsernameAvailable(String username) async {
+    final value = normalizeUsername(username);
+    availabilityCalls.add(value);
+    final gate = availabilityGates[value];
+    if (gate != null) return gate.future;
+    return !takenUsernames.contains(value);
+  }
 }
