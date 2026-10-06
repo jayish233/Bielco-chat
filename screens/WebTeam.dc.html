@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Relay — Team</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0B0B0C}a:hover{color:#2B50F5}
+input::placeholder{color:#8A8A91}
+@media (max-width: 560px){.rail{display:none !important}}
+</style>
+</helmet>
+<div style="height: 100vh; min-height: 640px; display: flex; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; color: #0B0B0C; background: #FAFAF9; overflow: hidden">
+
+  <nav class="rail" aria-label="Main" style="width: 72px; flex: none; background: #0B0B0C; display: flex; flex-direction: column; align-items: center; padding: 16px 0; gap: 8px; box-sizing: border-box">
+    <svg width="36" height="36" viewBox="0 0 32 32" aria-hidden="true" style="margin-bottom: 16px"><rect width="32" height="32" rx="9" fill="#FFFFFF"></rect><path d="M9.5 12h13M9.5 17h8" stroke="#0B0B0C" stroke-width="2.4" stroke-linecap="round"></path><circle cx="22" cy="21" r="2.6" fill="#2B50F5"></circle></svg>
+    <a href="WebChat.dc.html" aria-label="Chats" style="width: 48px; height: 48px; border-radius: 14px; color: #A1A1A8; display: flex; align-items: center; justify-content: center; position: relative">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"></path></svg>
+      <span style="position: absolute; top: 9px; right: 9px; width: 8px; height: 8px; border-radius: 50%; background: #2B50F5; border: 2px solid #0B0B0C"></span>
+    </a>
+    <a href="WebTeam.dc.html" aria-label="Team" aria-current="page" style="width: 48px; height: 48px; border-radius: 14px; background: #26262B; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0113 0"></path><path d="M16 4.5a3.5 3.5 0 010 7M18 14a6.5 6.5 0 013.5 6"></path></svg>
+    </a>
+    <button type="button" aria-label="Activity" style="width: 48px; height: 48px; border-radius: 14px; border: 0; background: transparent; color: #A1A1A8; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 16V11a6 6 0 1112 0v5l1.5 2h-15z"></path><path d="M10 20a2 2 0 004 0"></path></svg>
+    </button>
+    <div style="flex: 1"></div>
+    <button type="button" aria-label="Settings" style="width: 48px; height: 48px; border-radius: 14px; border: 0; background: transparent; color: #A1A1A8; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"></path><circle cx="16" cy="7" r="2"></circle><circle cx="10" cy="17" r="2"></circle></svg>
+    </button>
+    <div style="width: 40px; height: 40px; border-radius: 12px; background: #F4E3DA; color: #0B0B0C; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; position: relative; margin-top: 4px">PS
+      <span style="position: absolute; bottom: -2px; right: -2px; width: 12px; height: 12px; border-radius: 50%; background: #12A150; border: 2.5px solid #0B0B0C"></span>
+    </div>
+  </nav>
+
+  <main style="flex: 1; min-width: 0; overflow-y: auto">
+    <div style="max-width: 1280px; margin: 0 auto; padding: 32px 32px 48px; box-sizing: border-box; display: flex; flex-direction: column; gap: 28px">
+
+      <header style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <div style="font-size: 13px; color: #6B6B72">Acme Studio</div>
+          <h1 style="margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -0.03em">Team</h1>
+        </div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap">
+          <button type="button" style="height: 44px; padding: 0 16px; border-radius: 12px; border: 1px solid #E4E4E7; background: #FFFFFF; font: inherit; font-size: 14px; font-weight: 500; color: #0B0B0C; display: flex; align-items: center; gap: 8px; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>New group
+          </button>
+          <button type="button" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 0; background: #0B0B0C; font: inherit; font-size: 14px; font-weight: 600; color: #FFFFFF; display: flex; align-items: center; gap: 8px; cursor: pointer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0113 0M19 8v6M16 11h6"></path></svg>Invite people
+          </button>
+        </div>
+      </header>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+
+        <section style="flex: 999 1 620px; min-width: 0; background: #FFFFFF; border: 1px solid #ECECEE; border-radius: 16px; overflow: hidden">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 16px 0">
+            <div role="tablist" aria-label="Filter members" style="display: flex; gap: 4px; flex-wrap: wrap">
+              <button type="button" role="tab" aria-selected="true" style="height: 36px; padding: 0 14px; border-radius: 10px; border: 0; background: #0B0B0C; color: #FFFFFF; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">All <span style="opacity: 0.7">12</span></button>
+              <button type="button" role="tab" aria-selected="false" style="height: 36px; padding: 0 14px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Admins</button>
+              <button type="button" role="tab" aria-selected="false" style="height: 36px; padding: 0 14px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer">Guests</button>
+              <button type="button" role="tab" aria-selected="false" style="height: 36px; padding: 0 14px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; font: inherit; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px">Pending <span style="min-width: 20px; height: 20px; box-sizing: border-box; padding: 0 6px; border-radius: 10px; background: #EEF1FF; color: #1F3FD1; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; justify-content: center">2</span></button>
+            </div>
+            <label style="height: 40px; width: 260px; max-width: 100%; display: flex; align-items: center; gap: 8px; padding: 0 12px; border-radius: 10px; background: #FAFAF9; border: 1px solid #E4E4E7; color: #6B6B72; box-sizing: border-box">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+              <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search members</span>
+              <input type="search" placeholder="Search by name or email" style="flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 14px; color: #0B0B0C; outline: none">
+            </label>
+          </div>
+
+          <div style="overflow-x: auto; margin-top: 12px">
+            <table style="width: 100%; min-width: 720px; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="text-align: left; color: #6B6B72; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em">
+                  <th scope="col" style="font-weight: 500; padding: 10px 16px; border-bottom: 1px solid #ECECEE">Member</th>
+                  <th scope="col" style="font-weight: 500; padding: 10px 16px; border-bottom: 1px solid #ECECEE">Role</th>
+                  <th scope="col" style="font-weight: 500; padding: 10px 16px; border-bottom: 1px solid #ECECEE">Groups</th>
+                  <th scope="col" style="font-weight: 500; padding: 10px 16px; border-bottom: 1px solid #ECECEE">Status</th>
+                  <th scope="col" style="padding: 10px 16px; border-bottom: 1px solid #ECECEE"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #F4E3DA; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">PS</span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Priya Sharma <span style="font-weight: 400; color: #6B6B72">(you)</span></span><span style="font-size: 13px; color: #6B6B72">priya@acme.studio</span></div></div></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; background: #0B0B0C; color: #FFFFFF; font-size: 12px; font-weight: 600">Owner</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; color: #3A3A40">Design, Leadership</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; align-items: center; gap: 8px; color: #3A3A40"><span style="width: 8px; height: 8px; border-radius: 50%; background: #12A150"></span>Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; text-align: right"><button type="button" aria-label="More actions for Priya Sharma" style="width: 36px; height: 36px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; cursor: pointer; font: inherit; font-size: 18px; line-height: 1">⋯</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #DDE6F7; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">AK</span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Aisha Khan</span><span style="font-size: 13px; color: #6B6B72">aisha@acme.studio</span></div></div></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; border: 1px solid #0B0B0C; color: #0B0B0C; font-size: 12px; font-weight: 600; box-sizing: border-box">Admin</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; color: #3A3A40">Design</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; align-items: center; gap: 8px; color: #3A3A40"><span style="width: 8px; height: 8px; border-radius: 50%; background: #12A150"></span>Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; text-align: right"><button type="button" aria-label="More actions for Aisha Khan" style="width: 36px; height: 36px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; cursor: pointer; font: inherit; font-size: 18px; line-height: 1">⋯</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #E3EFE6; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">RM</span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Rahul Mehta</span><span style="font-size: 13px; color: #6B6B72">rahul@acme.studio</span></div></div></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; background: #F1F1F3; color: #3A3A40; font-size: 12px; font-weight: 600">Member</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; color: #3A3A40">Engineering</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; align-items: center; gap: 8px; color: #3A3A40"><span style="width: 8px; height: 8px; border-radius: 50%; background: #12A150"></span>Active</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; text-align: right"><button type="button" aria-label="More actions for Rahul Mehta" style="width: 36px; height: 36px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; cursor: pointer; font: inherit; font-size: 18px; line-height: 1">⋯</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #E8E4DC; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">MO</span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Maya Okafor</span><span style="font-size: 13px; color: #6B6B72">maya@acme.studio</span></div></div></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; background: #F1F1F3; color: #3A3A40; font-size: 12px; font-weight: 600">Member</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; color: #3A3A40">Design, Growth</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; align-items: center; gap: 8px; color: #3A3A40"><span style="width: 8px; height: 8px; border-radius: 50%; background: #E5A50A"></span>Away</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; text-align: right"><button type="button" aria-label="More actions for Maya Okafor" style="width: 36px; height: 36px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; cursor: pointer; font: inherit; font-size: 18px; line-height: 1">⋯</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 36px; height: 36px; flex: none; border-radius: 11px; background: #ECE3F3; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">JL</span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">Jonas Lind</span><span style="font-size: 13px; color: #6B6B72">jonas@partner.co</span></div></div></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; border: 1px dashed #A1A1A8; color: #3A3A40; font-size: 12px; font-weight: 600; box-sizing: border-box">Guest</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; color: #3A3A40">#launch-q4 only</td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3"><span style="display: inline-flex; align-items: center; gap: 8px; color: #6B6B72"><span style="width: 8px; height: 8px; border-radius: 50%; border: 1.5px solid #A1A1A8; box-sizing: border-box"></span>Offline</span></td>
+                  <td style="padding: 12px 16px; border-bottom: 1px solid #F1F1F3; text-align: right"><button type="button" aria-label="More actions for Jonas Lind" style="width: 36px; height: 36px; border-radius: 10px; border: 0; background: transparent; color: #3A3A40; cursor: pointer; font: inherit; font-size: 18px; line-height: 1">⋯</button></td>
+                </tr>
+                <tr>
+                  <td style="padding: 12px 16px"><div style="display: flex; align-items: center; gap: 12px"><span style="width: 36px; height: 36px; flex: none; border-radius: 11px; border: 1.5px dashed #A1A1A8; box-sizing: border-box; color: #6B6B72; display: flex; align-items: center; justify-content: center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="M3 7l9 6 9-6"></path></svg></span><div style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 600">leo@acme.studio</span><span style="font-size: 13px; color: #6B6B72">Invited 2 days ago</span></div></div></td>
+                  <td style="padding: 12px 16px"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; background: #F1F1F3; color: #3A3A40; font-size: 12px; font-weight: 600">Member</span></td>
+                  <td style="padding: 12px 16px; color: #6B6B72">—</td>
+                  <td style="padding: 12px 16px"><span style="display: inline-flex; height: 26px; align-items: center; padding: 0 10px; border-radius: 999px; background: #EEF1FF; color: #1F3FD1; font-size: 12px; font-weight: 600">Pending</span></td>
+                  <td style="padding: 12px 16px; text-align: right"><button type="button" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #E4E4E7; background: #FFFFFF; color: #0B0B0C; cursor: pointer; font: inherit; font-size: 13px; font-weight: 500">Resend</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <aside style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <section style="background: #0B0B0C; color: #FFFFFF; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+            <h2 style="margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em">Invite teammates</h2>
+            <label for="invite-emails" style="font-size: 13px; color: #B4B4BB">Email addresses</label>
+            <div style="display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; border-radius: 12px; background: #1A1A1E; border: 1px solid #2E2E34">
+              <span style="height: 28px; display: inline-flex; align-items: center; gap: 6px; padding: 0 6px 0 10px; border-radius: 8px; background: #2A2A30; font-size: 13px">sam@acme.studio <button type="button" aria-label="Remove sam@acme.studio" style="width: 20px; height: 20px; border: 0; background: transparent; color: #B4B4BB; cursor: pointer; padding: 0; font: inherit">×</button></span>
+              <input id="invite-emails" type="email" placeholder="Add another…" style="flex: 1; min-width: 120px; height: 28px; border: 0; background: transparent; font: inherit; font-size: 13px; color: #FFFFFF; outline: none">
+            </div>
+            <label style="display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: #B4B4BB">Role
+              <select style="height: 40px; border-radius: 10px; background: #1A1A1E; border: 1px solid #2E2E34; color: #FFFFFF; font: inherit; font-size: 14px; padding: 0 10px">
+                <option>Member</option><option>Admin</option><option>Guest</option>
+              </select>
+            </label>
+            <button type="button" style="height: 44px; border-radius: 12px; border: 0; background: #FFFFFF; color: #0B0B0C; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Send invites</button>
+            <div style="height: 1px; background: #2E2E34"></div>
+            <div style="display: flex; align-items: center; gap: 10px">
+              <div style="flex: 1; min-width: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: #B4B4BB; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">relay.app/join/acme-studio/x7f2</div>
+              <button type="button" style="height: 36px; padding: 0 12px; border-radius: 10px; border: 1px solid #3A3A40; background: transparent; color: #FFFFFF; font: inherit; font-size: 13px; font-weight: 500; display: flex; align-items: center; gap: 6px; cursor: pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"></rect><path d="M5 15V6a2 2 0 012-2h9"></path></svg>Copy link</button>
+            </div>
+          </section>
+
+          <section style="background: #FFFFFF; border: 1px solid #ECECEE; border-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 12px">
+            <h2 style="margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em">Groups</h2>
+            <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px; margin: 0 -10px; border-radius: 12px; text-decoration: none; color: #0B0B0C">
+              <span style="width: 40px; height: 40px; border-radius: 12px; background: #DDE6F7; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px">D</span>
+              <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Design</span><span style="font-size: 13px; color: #6B6B72">5 members · @design</span></span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px; margin: 0 -10px; border-radius: 12px; text-decoration: none; color: #0B0B0C">
+              <span style="width: 40px; height: 40px; border-radius: 12px; background: #E3EFE6; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px">E</span>
+              <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Engineering</span><span style="font-size: 13px; color: #6B6B72">4 members · @eng</span></span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+            </a>
+            <a href="#" style="display: flex; align-items: center; gap: 12px; padding: 10px; margin: 0 -10px; border-radius: 12px; text-decoration: none; color: #0B0B0C">
+              <span style="width: 40px; height: 40px; border-radius: 12px; background: #F4E3DA; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px">G</span>
+              <span style="flex: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 14px; font-weight: 600">Growth</span><span style="font-size: 13px; color: #6B6B72">3 members · @growth</span></span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6B6B72" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+            </a>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

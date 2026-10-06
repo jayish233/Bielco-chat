@@ -1,0 +1,64 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap");
+
+:root {
+  /* Color */
+  --ink: #0B0B0C;
+  --ink-2: #26262B;
+  --text-secondary: #3A3A40;
+  --text-muted: #5E5E66;
+  --text-subtle: #6B6B72;
+  --placeholder: #8A8A91;
+  --border-strong: #D4D4D8;
+  --border: #E4E4E7;
+  --hairline: #ECECEE;
+  --fill-muted: #F1F1F3;
+  --surface-alt: #FAFAF9;
+  --surface: #FFFFFF;
+  --accent: #2B50F5;
+  --accent-strong: #1F3FD1;
+  --accent-soft: #EEF1FF;
+  --online: #12A150;
+  --away: #E5A50A;
+  --danger: #C4281C;
+  --danger-text: #B02418;
+  --avatar-1: #DDE6F7;
+  --avatar-2: #E3EFE6;
+  --avatar-3: #E8E4DC;
+  --avatar-4: #F4E3DA;
+  --avatar-5: #ECE3F3;
+
+  /* Type */
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 12px;
+  --radius-xl: 14px;
+  --radius-2xl: 16px;
+  --radius-bubble: 20px;
+  --radius-pill: 999px;
+
+  /* Elevation */
+  --shadow-composer: 0 1px 2px rgba(11,11,12,0.04), 0 8px 24px rgba(11,11,12,0.05);
+  --shadow-fab: 0 4px 12px rgba(11,11,12,0.18);
+}
+
+/* Dark mode (not mocked yet — suggested mapping) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --surface: #0B0B0C;
+    --surface-alt: #111113;
+    --fill-muted: #1F1F23;
+    --hairline: #24242A;
+    --border: #2A2A2F;
+    --border-strong: #3A3A40;
+    --ink: #F4F4F5;
+    --text-secondary: #D4D4D8;
+    --text-muted: #B4B4BB;
+    --text-subtle: #A1A1A8;
+    --accent-soft: #1A2250;
+    --accent-strong: #8FA6FF;
+  }
+}

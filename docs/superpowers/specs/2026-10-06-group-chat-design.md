@@ -109,3 +109,26 @@ On web, `file_picker` returns bytes instead of file paths, so uploads use `uploa
 - `flutter analyze` clean; `flutter test` (repository unit tests with mocked client, widget tests for key screens).
 - Manual end-to-end per milestone: two accounts on two devices/emulators (+ a Chrome tab): DM and group
   messaging appears live, attachments open, receipts/typing update, push arrives with the app in the background and opens the right chat.
+
+## Decisions after the UI handoff (2026-10-06)
+The "Relay" design handoff (`CLAUDE.md`, `tokens.*`, `screens/`) is the **visual** spec. Where it conflicts with this
+document, these decisions win:
+
+- **Stack stays Flutter + Supabase.** The handoff's Next.js/Expo suggestion is not used.
+- **Scope = this spec + three design features.** Workspaces, channels-as-a-concept, Owner/Guest roles, Google sign-in,
+  passkeys, "Keep me signed in", terms checkbox and the 3-step onboarding stepper are **out of v1**. Design
+  "channels" map to our groups.
+  - **People screen** (the design's Team screen, Milestone 2): directory of every profile with search, a group-role pill where
+    relevant, and a "Message" shortcut that calls `get_or_create_dm`. The tab is named "People".
+  - **Invite links** (Milestone 2): a group admin creates a shareable link; any signed-in user opening it joins that group.
+    Table `conversation_invites(token text pk, conversation_id, created_by, created_at, expires_at null, revoked_at null)`
+    + RPC `join_via_invite(token)`. Signup stays open.
+  - **Voice notes** (Milestone 3): `attachment_type = 'audio'`; duration + waveform stored in `messages.attachment_meta jsonb`.
+- **One adaptive UI**, not three. Shared widgets built from Relay tokens. Cheap per-platform tweaks only: control height and
+  radius (web 48/12, iOS 54/14, Android 56/pill), icon button size (40/44/48), avatar shape (rounded square vs circle),
+  and a multi-pane layout on wide web. Message rendering = bubbles everywhere.
+- **Sign-up is one screen:** name, username (live `@username` preview replaces the workspace-URL preview), email, password with
+  a 4-segment strength meter. Passwords: 8+ characters with a letter and a number (enforced client-side and in Supabase config).
+- **Dark mode ships from Milestone 1** using the dark mapping in `tokens.css` (cards `#17171A`, cobalt unchanged).
+- Riverpod is used **without code generation** (plain `Provider`/`Notifier`), to keep the build simple.
+- Deferred past Milestone 1: password reset (needs deep links), avatar upload (Milestone 3 with media).

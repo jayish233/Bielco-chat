@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Relay iOS — Create account</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0B0B0C}a:hover{color:#2B50F5}
+input::placeholder{color:#8A8A91}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 56px 24px 40px; display: flex; flex-direction: column; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; color: #0B0B0C; background: #FFFFFF">
+
+  <div style="display: flex; align-items: center; justify-content: space-between; height: 44px">
+    <a href="iOSSignIn.dc.html" aria-label="Back to sign in" style="width: 44px; height: 44px; margin-left: -10px; display: flex; align-items: center; justify-content: center; color: #0B0B0C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 6l-6 6 6 6"></path></svg></a>
+    <div style="display: flex; gap: 6px" aria-label="Step 1 of 3">
+      <span style="width: 28px; height: 4px; border-radius: 2px; background: #0B0B0C"></span>
+      <span style="width: 28px; height: 4px; border-radius: 2px; background: #E4E4E7"></span>
+      <span style="width: 28px; height: 4px; border-radius: 2px; background: #E4E4E7"></span>
+    </div>
+    <span style="width: 34px"></span>
+  </div>
+
+  <h1 style="margin: 24px 0 8px; font-size: 34px; line-height: 1.1; font-weight: 600; letter-spacing: -0.035em">Create your account</h1>
+  <p style="margin: 0 0 28px; font-size: 16px; line-height: 1.5; color: #5E5E66">Use your work email so teammates can find you.</p>
+
+  <form style="display: flex; flex-direction: column; gap: 16px; margin: 0">
+    <label style="display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 14px; font-weight: 500">Full name</span>
+      <input type="text" autocomplete="name" placeholder="Priya Sharma" style="height: 52px; box-sizing: border-box; padding: 0 16px; border: 1px solid #D4D4D8; border-radius: 14px; font: inherit; font-size: 17px; color: #0B0B0C; background: #FFFFFF">
+    </label>
+    <label style="display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 14px; font-weight: 500">Work email</span>
+      <input type="email" autocomplete="email" value="priya@acme.studio" style="height: 52px; box-sizing: border-box; padding: 0 16px; border: 1.5px solid #0B0B0C; border-radius: 14px; font: inherit; font-size: 17px; color: #0B0B0C; background: #FFFFFF">
+    </label>
+    <label style="display: flex; flex-direction: column; gap: 8px">
+      <span style="font-size: 14px; font-weight: 500">Password</span>
+      <input type="password" autocomplete="new-password" placeholder="At least 8 characters" style="height: 52px; box-sizing: border-box; padding: 0 16px; border: 1px solid #D4D4D8; border-radius: 14px; font: inherit; font-size: 17px; color: #0B0B0C; background: #FFFFFF">
+    </label>
+    <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 14px; color: #5E5E66">
+      <li style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#12A150" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Work email verified domain</li>
+      <li style="display: flex; align-items: center; gap: 8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#A1A1A8" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"></circle></svg>8+ characters with a number</li>
+    </ul>
+  </form>
+
+  <div style="flex: 1"></div>
+
+  <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.45; color: #3A3A40; margin-bottom: 16px">
+    <input type="checkbox" style="width: 20px; height: 20px; accent-color: #0B0B0C; margin: 0; flex: none">
+    <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span>
+  </label>
+  <a href="iOSChats.dc.html" style="height: 54px; border-radius: 14px; background: #0B0B0C; color: #FFFFFF; text-decoration: none; font-size: 17px; font-weight: 600; display: flex; align-items: center; justify-content: center">Continue</a>
+  <p style="margin: 18px 0 0; font-size: 15px; color: #5E5E66; text-align: center">Have an account? <a href="iOSSignIn.dc.html" style="font-weight: 600">Sign in</a></p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

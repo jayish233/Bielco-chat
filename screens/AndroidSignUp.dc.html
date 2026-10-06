@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Relay Android — Create account</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#0B0B0C}a:hover{color:#2B50F5}
+input::placeholder{color:#8A8A91}
+</style>
+</helmet>
+<div style="width: 412px; height: 915px; box-sizing: border-box; display: flex; flex-direction: column; font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; color: #0B0B0C; background: #FFFFFF">
+
+  <header style="padding: 40px 4px 0; height: 104px; box-sizing: border-box; display: flex; align-items: center; gap: 4px">
+    <a href="AndroidSignIn.dc.html" aria-label="Back" style="width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #0B0B0C"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"></path></svg></a>
+    <span style="flex: 1; font-size: 20px; font-weight: 500">Create account</span>
+  </header>
+
+  <div role="progressbar" aria-label="Step 1 of 3" aria-valuenow="1" aria-valuemin="1" aria-valuemax="3" style="margin: 0 24px; height: 4px; border-radius: 2px; background: #ECECEE; overflow: hidden">
+    <div style="width: 33%; height: 100%; border-radius: 2px; background: #0B0B0C"></div>
+  </div>
+
+  <div style="padding: 24px 24px 32px; display: flex; flex-direction: column; flex: 1">
+    <div style="font-size: 13px; font-weight: 500; color: #5E5E66; font-family: 'Geist Mono', ui-monospace, monospace">Step 1 of 3</div>
+    <h1 style="margin: 8px 0 8px; font-size: 28px; line-height: 1.2; font-weight: 600; letter-spacing: -0.03em">Tell us about you</h1>
+    <p style="margin: 0 0 28px; font-size: 16px; line-height: 1.5; color: #5E5E66">You’ll name your workspace next.</p>
+
+    <form style="display: flex; flex-direction: column; gap: 24px; margin: 0">
+      <div style="position: relative">
+        <label for="as-name" style="position: absolute; top: -9px; left: 12px; padding: 0 4px; background: #FFFFFF; font-size: 12px; font-weight: 500; color: #5E5E66">Full name</label>
+        <input id="as-name" type="text" autocomplete="name" value="Priya Sharma" style="width: 100%; height: 56px; box-sizing: border-box; padding: 0 16px; border: 1px solid #8A8A91; border-radius: 8px; font: inherit; font-size: 16px; color: #0B0B0C; background: #FFFFFF; outline: none">
+      </div>
+      <div style="position: relative">
+        <label for="as-email" style="position: absolute; top: -9px; left: 12px; padding: 0 4px; background: #FFFFFF; font-size: 12px; font-weight: 500; color: #0B0B0C">Work email</label>
+        <input id="as-email" type="email" autocomplete="email" value="priya@acme" style="width: 100%; height: 56px; box-sizing: border-box; padding: 0 16px; border: 2px solid #C4281C; border-radius: 8px; font: inherit; font-size: 16px; color: #0B0B0C; background: #FFFFFF; outline: none">
+        <div style="display: flex; align-items: center; gap: 6px; margin: 6px 0 0 16px; font-size: 13px; color: #B02418"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 8v5M12 16h.01"></path></svg>Enter a full email, like name@company.com</div>
+      </div>
+      <div style="position: relative">
+        <label for="as-pass" style="position: absolute; top: -9px; left: 12px; padding: 0 4px; background: #FFFFFF; font-size: 12px; font-weight: 500; color: #5E5E66">Password</label>
+        <input id="as-pass" type="password" autocomplete="new-password" placeholder="At least 8 characters" style="width: 100%; height: 56px; box-sizing: border-box; padding: 0 16px; border: 1px solid #8A8A91; border-radius: 8px; font: inherit; font-size: 16px; color: #0B0B0C; background: #FFFFFF; outline: none">
+        <div style="margin: 6px 0 0 16px; font-size: 13px; color: #5E5E66">Use 8 or more characters with a number.</div>
+      </div>
+      <label style="display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.45; color: #3A3A40">
+        <input type="checkbox" checked style="width: 20px; height: 20px; accent-color: #0B0B0C; margin: 1px 0 0; flex: none">
+        <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</span>
+      </label>
+    </form>
+
+    <div style="flex: 1"></div>
+    <a href="AndroidChats.dc.html" style="height: 56px; border-radius: 999px; background: #0B0B0C; color: #FFFFFF; text-decoration: none; font-size: 16px; font-weight: 600; display: flex; align-items: center; justify-content: center">Next</a>
+    <p style="margin: 18px 0 0; font-size: 15px; color: #5E5E66; text-align: center">Have an account? <a href="AndroidSignIn.dc.html" style="font-weight: 600">Sign in</a></p>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":412,"height":915}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>
