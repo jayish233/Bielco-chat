@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../theme/app_theme.dart';
 import '../theme/tokens.dart';
 
 /// Brand mark painted from the handoff SVG (32-unit box). Exposed to screen
@@ -13,29 +14,33 @@ class RelayLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final p = context.palette;
     return Semantics(
       label: appName,
       image: true,
       child: ExcludeSemantics(
         child: CustomPaint(
           size: Size.square(size),
-          painter: _LogoPainter(inverted),
+          painter: LogoPainter(
+            tile: inverted ? p.onInk : p.ink,
+            mark: inverted ? p.ink : p.onInk,
+          ),
         ),
       ),
     );
   }
 }
 
-class _LogoPainter extends CustomPainter {
-  _LogoPainter(this.inverted);
-  final bool inverted;
+@visibleForTesting
+class LogoPainter extends CustomPainter {
+  const LogoPainter({required this.tile, required this.mark});
+  final Color tile;
+  final Color mark;
 
   @override
   void paint(Canvas canvas, Size size) {
     final s = size.width / 32;
     canvas.scale(s);
-    final tile = inverted ? RelayColors.surface : RelayColors.ink;
-    final mark = inverted ? RelayColors.ink : RelayColors.surface;
     canvas.drawRRect(
       RRect.fromRectAndRadius(
         const Rect.fromLTWH(0, 0, 32, 32),
@@ -64,5 +69,5 @@ class _LogoPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(_LogoPainter old) => old.inverted != inverted;
+  bool shouldRepaint(LogoPainter old) => old.tile != tile || old.mark != mark;
 }

@@ -1,8 +1,13 @@
+import 'dart:ui' show Tristate;
+
 import 'package:chatapp/core/theme/tokens.dart';
 import 'package:chatapp/core/ui/relay_avatar.dart';
+import 'package:chatapp/core/theme/relay_palette.dart';
 import 'package:chatapp/core/ui/relay_button.dart';
+import 'package:chatapp/core/ui/relay_logo.dart';
 import 'package:chatapp/core/ui/relay_text_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/semantics.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import '../../support/pump.dart';
@@ -43,6 +48,11 @@ void main() {
   ) async {
     await pumpRelay(t, const RelayTextField(label: 'Password', obscure: true));
     expect(t.widget<TextField>(find.byType(TextField)).obscureText, isTrue);
+    expect(t.widget<TextField>(find.byType(TextField)).autocorrect, isFalse);
+    expect(
+      t.widget<TextField>(find.byType(TextField)).enableSuggestions,
+      isFalse,
+    );
     expect(
       t.getSize(find.byTooltip('Show password')).width,
       greaterThanOrEqualTo(44),
@@ -98,5 +108,64 @@ void main() {
       platform: TargetPlatform.iOS,
     );
     expect(radius().topLeft.x, closeTo(12, 0.001));
+  });
+
+  testWidgets('enabled button exposes a tap action; loading does not', (
+    t,
+  ) async {
+    final h = t.ensureSemantics();
+    await pumpRelay(t, RelayButton(label: 'Sign in', onPressed: () {}));
+    var n = t.getSemantics(find.byType(RelayButton));
+    expect(n.label, 'Sign in');
+    expect(n.getSemanticsData().hasAction(SemanticsAction.tap), isTrue);
+    expect(
+      n.getSemanticsData().flagsCollection.isEnabled == Tristate.isTrue,
+      isTrue,
+    );
+    await pumpRelay(
+      t,
+      RelayButton(label: 'Sign in', onPressed: () {}, loading: true),
+    );
+    n = t.getSemantics(find.byType(RelayButton));
+    expect(n.getSemanticsData().hasAction(SemanticsAction.tap), isFalse);
+    expect(
+      n.getSemanticsData().flagsCollection.isEnabled == Tristate.isTrue,
+      isFalse,
+    );
+    h.dispose();
+  });
+
+  testWidgets('error text is part of the field semantics', (t) async {
+    final h = t.ensureSemantics();
+    await pumpRelay(
+      t,
+      const RelayTextField(label: 'Email', errorText: 'Enter your email.'),
+    );
+    final n = t.getSemantics(find.byType(TextField));
+    expect(n.hint, contains('Enter your email.'));
+    expect(n.label, contains('Email'));
+    h.dispose();
+  });
+
+  testWidgets('logo is palette-aware in dark theme', (t) async {
+    await pumpRelay(t, const RelayLogo(), brightness: Brightness.dark);
+    LogoPainter painter() =>
+        t
+                .widget<CustomPaint>(
+                  find.descendant(
+                    of: find.byType(RelayLogo),
+                    matching: find.byType(CustomPaint),
+                  ),
+                )
+                .painter!
+            as LogoPainter;
+    expect(painter().tile, RelayPalette.dark.ink);
+    expect(painter().mark, RelayPalette.dark.onInk);
+    await pumpRelay(
+      t,
+      const RelayLogo(inverted: true),
+      brightness: Brightness.dark,
+    );
+    expect(painter().tile, RelayPalette.dark.onInk);
   });
 }

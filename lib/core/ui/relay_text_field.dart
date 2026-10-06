@@ -108,12 +108,15 @@ class _RelayTextFieldState extends State<RelayTextField> {
                   Expanded(
                     child: Semantics(
                       label: widget.label,
+                      hint: widget.errorText,
                       child: TextField(
                         controller: widget.controller,
                         focusNode: _focus,
                         enabled: widget.enabled,
                         readOnly: widget.readOnly,
                         obscureText: widget.obscure && _hidden,
+                        autocorrect: !widget.obscure,
+                        enableSuggestions: !widget.obscure,
                         keyboardType: widget.keyboardType,
                         autofillHints: widget.autofillHints,
                         textInputAction: widget.textInputAction,

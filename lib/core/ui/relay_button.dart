@@ -46,6 +46,7 @@ class RelayButton extends StatelessWidget {
       button: true,
       enabled: enabled,
       label: label,
+      onTap: enabled ? onPressed : null,
       child: ExcludeSemantics(
         child: Opacity(
           opacity: onPressed == null ? 0.5 : 1,
