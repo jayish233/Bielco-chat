@@ -91,7 +91,10 @@ class _RelayTextFieldState extends State<RelayTextField> {
                 ),
               ),
             ),
+          // Keyed so the TextField keeps its State when the focus ring above
+          // is inserted/removed (otherwise focusing rebuilds the field).
           Positioned.fill(
+            key: const ValueKey('field-box'),
             child: DecoratedBox(
               decoration: BoxDecoration(
                 color: p.surface,
