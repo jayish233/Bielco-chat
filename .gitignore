@@ -50,3 +50,7 @@ app.*.map.json
 # Supabase CLI
 supabase/.branches
 supabase/.temp
+
+# Local env (dart-define files)
+env/*.json
+!env/example.json
