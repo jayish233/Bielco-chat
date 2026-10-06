@@ -9,8 +9,9 @@ ThemeData buildRelayTheme(
   required TargetPlatform platform,
   required bool isWeb,
 }) {
-  final p =
-      brightness == Brightness.dark ? RelayPalette.dark : RelayPalette.light;
+  final p = brightness == Brightness.dark
+      ? RelayPalette.dark
+      : RelayPalette.light;
   final metrics = RelayMetrics.forPlatform(platform, isWeb: isWeb);
 
   TextStyle style(
@@ -19,15 +20,14 @@ ThemeData buildRelayTheme(
     double tracking = 0,
     double? height,
     Color? color,
-  }) =>
-      TextStyle(
-        fontFamily: RelayFonts.sans,
-        fontSize: size,
-        fontWeight: weight,
-        letterSpacing: tracking * size,
-        height: height,
-        color: color ?? p.ink,
-      );
+  }) => TextStyle(
+    fontFamily: RelayFonts.sans,
+    fontSize: size,
+    fontWeight: weight,
+    letterSpacing: tracking * size,
+    height: height,
+    color: color ?? p.ink,
+  );
 
   final textTheme = TextTheme(
     displayLarge: style(52, FontWeight.w600, tracking: -0.035, height: 1.05),
@@ -35,11 +35,9 @@ ThemeData buildRelayTheme(
     titleMedium: style(17, FontWeight.w600, tracking: -0.02),
     bodyLarge: style(16, FontWeight.w400, height: 1.5),
     bodyMedium: style(15, FontWeight.w400, height: 1.5),
-    bodySmall:
-        style(13, FontWeight.w400, height: 1.45, color: p.textMuted),
+    bodySmall: style(13, FontWeight.w400, height: 1.45, color: p.textMuted),
     labelLarge: style(14, FontWeight.w500),
-    labelSmall:
-        style(12, FontWeight.w500, tracking: 0.04, color: p.textMuted),
+    labelSmall: style(12, FontWeight.w500, tracking: 0.04, color: p.textMuted),
   );
 
   final colorScheme = ColorScheme(

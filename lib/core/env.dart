@@ -2,8 +2,9 @@
 /// `--dart-define-from-file=env/local.json`.
 abstract final class Env {
   static const String supabaseUrl = String.fromEnvironment('SUPABASE_URL');
-  static const String supabaseAnonKey =
-      String.fromEnvironment('SUPABASE_ANON_KEY');
+  static const String supabaseAnonKey = String.fromEnvironment(
+    'SUPABASE_ANON_KEY',
+  );
 }
 
 /// Throws a [StateError] with setup instructions if a value is missing.

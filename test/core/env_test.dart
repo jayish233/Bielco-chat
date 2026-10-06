@@ -5,11 +5,13 @@ void main() {
   test('checkEnv throws a helpful error when values are missing', () {
     expect(
       () => checkEnv(url: '', anonKey: 'k'),
-      throwsA(isA<StateError>().having(
-        (e) => e.message,
-        'message',
-        contains('--dart-define-from-file=env/local.json'),
-      )),
+      throwsA(
+        isA<StateError>().having(
+          (e) => e.message,
+          'message',
+          contains('--dart-define-from-file=env/local.json'),
+        ),
+      ),
     );
   });
 

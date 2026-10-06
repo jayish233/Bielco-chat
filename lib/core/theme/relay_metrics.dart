@@ -60,13 +60,12 @@ class RelayMetrics extends ThemeExtension<RelayMetrics> {
     double? controlRadius,
     double? iconButtonSize,
     bool? circularAvatars,
-  }) =>
-      RelayMetrics(
-        controlHeight: controlHeight ?? this.controlHeight,
-        controlRadius: controlRadius ?? this.controlRadius,
-        iconButtonSize: iconButtonSize ?? this.iconButtonSize,
-        circularAvatars: circularAvatars ?? this.circularAvatars,
-      );
+  }) => RelayMetrics(
+    controlHeight: controlHeight ?? this.controlHeight,
+    controlRadius: controlRadius ?? this.controlRadius,
+    iconButtonSize: iconButtonSize ?? this.iconButtonSize,
+    circularAvatars: circularAvatars ?? this.circularAvatars,
+  );
 
   @override
   RelayMetrics lerp(ThemeExtension<RelayMetrics>? other, double t) {
@@ -89,6 +88,10 @@ class RelayMetrics extends ThemeExtension<RelayMetrics> {
       other.circularAvatars == circularAvatars;
 
   @override
-  int get hashCode =>
-      Object.hash(controlHeight, controlRadius, iconButtonSize, circularAvatars);
+  int get hashCode => Object.hash(
+    controlHeight,
+    controlRadius,
+    iconButtonSize,
+    circularAvatars,
+  );
 }

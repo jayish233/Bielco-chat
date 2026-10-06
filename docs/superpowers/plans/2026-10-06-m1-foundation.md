@@ -40,9 +40,9 @@ visual spec `CLAUDE.md` + `tokens.json` + `screens/{Web,iOS,Android}{SignIn,Sign
 
 ## Prerequisites (person running the plan, once)
 
-- [ ] Install a Docker runtime and start it (Docker Desktop or OrbStack). Check: `docker info` exits 0.
-- [ ] `brew install supabase/tap/supabase`. Check: `supabase --version` prints ≥2.x.
-- [ ] `git checkout -b m1-foundation`, then commit the untracked design handoff as-is: `git add CLAUDE.md tokens.css tokens.json screens docs && git commit -m "docs: add Relay design handoff, decisions and M1 plan"`.
+- [x] Install a Docker runtime and start it (Docker Desktop or OrbStack). Check: `docker info` exits 0.
+- [x] `brew install supabase/tap/supabase`. Check: `supabase --version` prints ≥2.x.
+- [x] `git checkout -b m1-foundation`, then commit the untracked design handoff as-is: `git add CLAUDE.md tokens.css tokens.json screens docs && git commit -m "docs: add Relay design handoff, decisions and M1 plan"`.
 
 ---
 
@@ -60,12 +60,12 @@ visual spec `CLAUDE.md` + `tokens.json` + `screens/{Web,iOS,Android}{SignIn,Sign
   `public.username_available(name text) returns boolean` (granted to `anon, authenticated`).
   Sign-up metadata keys read by the profile trigger: `username`, `display_name`.
 
-- [ ] **Step 1: `supabase init`, then edit `supabase/config.toml`**
+- [x] **Step 1: `supabase init`, then edit `supabase/config.toml`**
 
 `[auth]`: `site_url = "http://localhost:3000"`, `minimum_password_length = 8`, `password_requirements = "letters_digits"`.
 `[auth.email]`: `enable_confirmations = false` (local only). Run `supabase start` and note the API URL and anon key it prints.
 
-- [ ] **Step 2: Write the failing pgTAP test `supabase/tests/01_schema_test.sql`**
+- [x] **Step 2: Write the failing pgTAP test `supabase/tests/01_schema_test.sql`**
 
 Wrap in `begin; select plan(N); … select * from finish(); rollback;`. Create users with
 `insert into auth.users (id, email, raw_user_meta_data) values (…, '{"username":"…","display_name":"…"}')`.
@@ -93,11 +93,11 @@ select isnt((select edited_at from messages where id = :m1), null, 'body update 
 ```
 (Use real UUID literals or `\set` variables; the `:'name'` shorthand above is illustrative.)
 
-- [ ] **Step 3: Run test to verify it fails**
+- [x] **Step 3: Run test to verify it fails**
 
 Run: `supabase test db` — Expected: FAIL (relations do not exist).
 
-- [ ] **Step 4: Write `supabase/migrations/20261006000001_schema.sql`**
+- [x] **Step 4: Write `supabase/migrations/20261006000001_schema.sql`**
 
 ```sql
 create table public.profiles (
@@ -165,11 +165,11 @@ Then, in the same file:
 - `bump_last_message_at()` trigger `after insert on messages`: `update conversations set last_message_at = new.created_at where id = new.conversation_id`. Security definer.
 - `stamp_edited_at()` trigger `before update on messages`: when `new.body is distinct from old.body` set `new.edited_at = now()`.
 
-- [ ] **Step 5: Run test to verify it passes**
+- [x] **Step 5: Run test to verify it passes**
 
 Run: `supabase db reset && supabase test db` — Expected: `01_schema_test.sql .. ok`, `All tests successful.`
 
-- [ ] **Step 6: Commit** — `git add supabase .gitignore && git commit -m "feat(db): v1 schema, profile trigger and helpers"`
+- [x] **Step 6: Commit** — `git add supabase .gitignore && git commit -m "feat(db): v1 schema, profile trigger and helpers"`
 
 ---
 
@@ -183,7 +183,7 @@ Run: `supabase db reset && supabase test db` — Expected: `01_schema_test.sql .
 - Consumes: Task 1 tables and `is_member` / `is_admin`.
 - Produces: the access rules every later milestone relies on (no client INSERT on `conversations` — Milestone 2 RPCs `create_group` / `get_or_create_dm` are security definer).
 
-- [ ] **Step 1: Write the failing test `supabase/tests/02_rls_test.sql`**
+- [x] **Step 1: Write the failing test `supabase/tests/02_rls_test.sql`**
 
 Setup as superuser: users A (group admin), B (group member), C (outsider); a group G with A admin + B member; a DM D
 between A and C; message mA in G by A; a message in D. Switch identity with
@@ -222,9 +222,9 @@ select is((with d as (delete from conversation_members where conversation_id = :
 select is((select count(*) from profiles), 0::bigint, 'anon reads nothing');
 ```
 
-- [ ] **Step 2: Run** `supabase test db` — Expected: FAIL in `02_rls_test.sql`.
+- [x] **Step 2: Run** `supabase test db` — Expected: FAIL in `02_rls_test.sql`.
 
-- [ ] **Step 3: Write `supabase/migrations/20261006000002_rls.sql`**
+- [x] **Step 3: Write `supabase/migrations/20261006000002_rls.sql`**
 
 `alter table … enable row level security` on all six tables. Then, from `anon, authenticated`, revoke `insert, update`
 on all six and grant back only these columns to `authenticated`:
@@ -257,9 +257,9 @@ Policies (all `to authenticated`):
 | message_reactions | delete | `user_id = auth.uid()` |
 | device_tokens | all | using/check `user_id = auth.uid()` |
 
-- [ ] **Step 4: Run** `supabase db reset && supabase test db` — Expected: `All tests successful.`
+- [x] **Step 4: Run** `supabase db reset && supabase test db` — Expected: `All tests successful.`
 
-- [ ] **Step 5: Commit** — `git commit -am "feat(db): row-level security and column privileges"` (add new files first).
+- [x] **Step 5: Commit** — `git commit -am "feat(db): row-level security and column privileges"` (add new files first).
 
 ---
 
@@ -282,7 +282,7 @@ Policies (all `to authenticated`):
   - `ThemeData buildRelayTheme(Brightness brightness, {required TargetPlatform platform, required bool isWeb})`.
   - `extension RelayThemeX on BuildContext { RelayPalette get palette; RelayMetrics get metrics; }`.
 
-- [ ] **Step 1: Dependencies and assets**
+- [x] **Step 1: Dependencies and assets**
 
 `flutter pub add supabase_flutter flutter_riverpod go_router` and remove `cupertino_icons`. Download static TTFs from
 the latest `vercel/geist-font` GitHub release into `assets/fonts/`: `Geist-Regular/Medium/SemiBold.ttf`,
@@ -290,7 +290,7 @@ the latest `vercel/geist-font` GitHub release into `assets/fonts/`: `Geist-Regul
 `env/local.json` = `{"SUPABASE_URL":"http://127.0.0.1:54321","SUPABASE_ANON_KEY":"<from supabase start>"}`;
 `local.android.json` is the same with `http://10.0.2.2:54321`; `example.json` has placeholder values.
 
-- [ ] **Step 2: Write failing tests**
+- [x] **Step 2: Write failing tests**
 
 ```dart
 // test/core/env_test.dart
@@ -332,9 +332,9 @@ for (final b in Brightness.values) {
 ```
 `hasMetrics` and `contrastRatio` (WCAG relative-luminance formula via `Color.computeLuminance()`) live in `test/support/theme_matchers.dart`.
 
-- [ ] **Step 3: Run** `flutter test test/core` — Expected: FAIL (undefined names).
+- [x] **Step 3: Run** `flutter test test/core` — Expected: FAIL (undefined names).
 
-- [ ] **Step 4: Implement the produces-list above**
+- [x] **Step 4: Implement the produces-list above**
 
 Dark palette values: `background #0B0B0C, surface #17171A, surfaceAlt #111113, ink #F4F4F5, onInk #0B0B0C, textSecondary #D4D4D8,
 textMuted #B4B4BB, textSubtle #A1A1A8, placeholder #8A8A91, border #2A2A2F, borderStrong #3A3A40, hairline #24242A,
@@ -345,9 +345,9 @@ Text theme (`fontFamily: 'Geist'`, letter spacing is em × size): `displayLarge`
 `bodySmall` 13/400/h1.45 · `labelLarge` 14/500 · `labelSmall` 12/500/+0.04em. Colors from the palette (`ink`, muted = `textMuted`).
 `ColorScheme`: `primary = ink`, `onPrimary = onInk`, `secondary = accent`, `error = danger`, `surface = background`.
 
-- [ ] **Step 5: Run** `flutter test test/core && flutter analyze` — Expected: all pass, `No issues found!`
+- [x] **Step 5: Run** `flutter test test/core && flutter analyze` — Expected: all pass, `No issues found!`
 
-- [ ] **Step 6: Commit** — `git commit -m "feat(app): dependencies, env config, Relay tokens and theme"`
+- [x] **Step 6: Commit** — `git commit -m "feat(app): dependencies, env config, Relay tokens and theme"`
 
 ---
 
@@ -367,7 +367,7 @@ Text theme (`fontFamily: 'Geist'`, letter spacing is em × size): `displayLarge`
   - `FormErrorBanner({required String message})` — `dangerText` text on a soft danger tint, `Semantics(liveRegion: true)`.
   - Test helper `Future<void> pumpRelay(WidgetTester t, Widget child, {TargetPlatform platform = TargetPlatform.iOS, bool isWeb = false, Brightness brightness = Brightness.light, List<Override> overrides = const []})` wrapping in `ProviderScope` + `MaterialApp(theme: buildRelayTheme(...))`.
 
-- [ ] **Step 1: Write failing tests** (`test/core/ui/primitives_test.dart`)
+- [x] **Step 1: Write failing tests** (`test/core/ui/primitives_test.dart`)
 
 ```dart
 testWidgets('primary button uses platform control height', (t) async {
@@ -410,10 +410,10 @@ test('avatar tint is stable and from the 5 token tints', () {
 testWidgets('avatar is a circle on Android, rounded square elsewhere', (t) async { /* inspect the ClipRRect/BoxDecoration shape */ });
 ```
 
-- [ ] **Step 2: Run** `flutter test test/core/ui` — Expected: FAIL.
-- [ ] **Step 3: Implement the produces-list above.**
-- [ ] **Step 4: Run** `flutter test && flutter analyze` — Expected: all pass, no issues.
-- [ ] **Step 5: Commit** — `git commit -m "feat(ui): Relay button, text field, avatar, logo primitives"`
+- [x] **Step 2: Run** `flutter test test/core/ui` — Expected: FAIL.
+- [x] **Step 3: Implement the produces-list above.**
+- [x] **Step 4: Run** `flutter test && flutter analyze` — Expected: all pass, no issues.
+- [x] **Step 5: Commit** — `git commit -m "feat(ui): Relay button, text field, avatar, logo primitives"`
 
 ---
 
@@ -445,7 +445,7 @@ testWidgets('avatar is a circle on Android, rounded square elsewhere', (t) async
   - `lib/core/providers.dart`: `supabaseClientProvider`, `authRepositoryProvider`, `profileRepositoryProvider` (`Provider`), `authStatusProvider` (`StreamProvider<AuthStatus>`), `myProfileProvider` (`FutureProvider<Profile>` that `ref.watch(authStatusProvider)` so it refetches on auth change).
   - `test/support/fakes.dart`: `FakeAuthRepository` (in-memory; `StreamController.broadcast` for status; public `signInCalls` / `signUpCalls` records, `int signOutCalls`; settable `Object? nextError`, `Completer<void>? signInGate` that `signIn` awaits when set, `SignUpResult signUpResult`; `emit(AuthStatus)`), `FakeProfileRepository` (settable `Profile? profile` and `Object? loadError`, `Set<String> takenUsernames`, `nextError`, `updateCalls` records of `(displayName, username)`).
 
-- [ ] **Step 1: Write failing validator tests** — one `expect` per rule above, e.g.
+- [x] **Step 1: Write failing validator tests** — one `expect` per rule above, e.g.
 
 ```dart
 expect(validateEmail('  priya@example.com '), isNull);
@@ -460,11 +460,11 @@ expect(validateUsername('priya.s'), 'Use 3–20 letters, numbers or underscores.
 expect(validateDisplayName('  '), 'Enter your name.');
 ```
 
-- [ ] **Step 2: Run** `flutter test test/features/auth/validators_test.dart` — Expected: FAIL.
-- [ ] **Step 3: Implement validators, failures, models, interfaces, fakes and providers.**
-- [ ] **Step 4: Run** — Expected: PASS.
+- [x] **Step 2: Run** `flutter test test/features/auth/validators_test.dart` — Expected: FAIL.
+- [x] **Step 3: Implement validators, failures, models, interfaces, fakes and providers.**
+- [x] **Step 4: Run** — Expected: PASS.
 
-- [ ] **Step 5: Write failing integration tests** `test_integration/supabase_repositories_test.dart`
+- [x] **Step 5: Write failing integration tests** `test_integration/supabase_repositories_test.dart`
 
 Build the client with `SupabaseClient(Env.supabaseUrl, Env.supabaseAnonKey, authOptions: const AuthClientOptions(authFlowType: AuthFlowType.implicit))`
 (PKCE needs storage that plain tests lack). Unique emails `m1-<microseconds>@example.com`. Tests:
@@ -477,9 +477,9 @@ Build the client with `SupabaseClient(Env.supabaseUrl, Env.supabaseAnonKey, auth
 - `statusChanges()` emits `signedOut` after `signOut()`.
 - Client pointed at `http://127.0.0.1:1` → `signIn` throws `AuthFailure(network)`.
 
-- [ ] **Step 6: Run** `flutter test test_integration --dart-define-from-file=env/local.json` (stack running) — Expected: FAIL.
+- [x] **Step 6: Run** `flutter test test_integration --dart-define-from-file=env/local.json` (stack running) — Expected: FAIL.
 
-- [ ] **Step 7: Implement `SupabaseAuthRepository` and `SupabaseProfileRepository`**
+- [x] **Step 7: Implement `SupabaseAuthRepository` and `SupabaseProfileRepository`**
 
 Trim email and `normalizeUsername` before sending; signup `data: {'username': …, 'display_name': …}`. Map errors:
 `AuthException.code` `invalid_credentials` → invalidCredentials; `user_already_exists`/`email_exists` → emailTaken;
@@ -488,8 +488,8 @@ Trim email and `normalizeUsername` before sending; signup `data: {'username': �
 `PostgrestException.code == '23505'` → usernameTaken. `signUp` pre-checks `username_available` and throws usernameTaken early.
 `needsEmailConfirmation = response.session == null`.
 
-- [ ] **Step 8: Run** unit + integration suites — Expected: PASS.
-- [ ] **Step 9: Commit** — `git commit -m "feat(auth): validators, auth and profile repositories"`
+- [x] **Step 8: Run** unit + integration suites — Expected: PASS.
+- [x] **Step 9: Commit** — `git commit -m "feat(auth): validators, auth and profile repositories"`
 
 ---
 
@@ -510,7 +510,7 @@ Trim email and `normalizeUsername` before sending; signup `data: {'username': �
   - `HomeScreen` (Milestone 2 replaces its body with the chat list): app bar with `appName` title and a `RelayAvatar` button (tooltip `'Your profile'`) → `Routes.profile`; empty state headline `'No conversations yet'`, body `'Chats with your group will show up here.'`.
   - `main()`: `checkEnv(...)`, `await Supabase.initialize(url:, anonKey:)`, `runApp(const ProviderScope(child: RelayApp()))`.
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```dart
 // router_test.dart
@@ -526,10 +526,10 @@ testWidgets('session ending on /profile returns to sign-in', …);              
 ```
 (Sign-in screen text comes from Task 7; until then a placeholder `SignInScreen` showing `'Welcome back'` is acceptable and gets replaced.)
 
-- [ ] **Step 2: Run** `flutter test test/core/router_test.dart test/app_test.dart` — Expected: FAIL.
-- [ ] **Step 3: Implement.**
-- [ ] **Step 4: Run** `flutter test && flutter analyze`, then smoke: `flutter run -d chrome --web-port 3000 --dart-define-from-file=env/local.json` shows the sign-in route. Expected: tests pass; app boots without errors.
-- [ ] **Step 5: Commit** — `git commit -m "feat(app): router with auth redirect and home shell"`
+- [x] **Step 2: Run** `flutter test test/core/router_test.dart test/app_test.dart` — Expected: FAIL.
+- [x] **Step 3: Implement.**
+- [x] **Step 4: Run** `flutter test && flutter analyze`, then smoke: `flutter run -d chrome --web-port 3000 --dart-define-from-file=env/local.json` shows the sign-in route. Expected: tests pass; app boots without errors.
+- [x] **Step 5: Commit** — `git commit -m "feat(app): router with auth redirect and home shell"`
 
 ---
 
@@ -546,7 +546,7 @@ testWidgets('session ending on /profile returns to sign-in', …);              
   - `class AuthFormController extends Notifier<AuthFormState>` exposed as `authFormControllerProvider = NotifierProvider.autoDispose(AuthFormController.new)` with `AuthFormState { bool submitting; String? formError; }` and `Future<void> run(Future<void> Function() action)` — ignores calls while `submitting`, maps `AuthFailure` → `formError = failure.message`. Also used by Tasks 8 and 9.
   - `SignInScreen`: `RelayLogo`, `'Welcome back'` (headlineLarge), `'Pick up your conversations where you left off.'` (bodyMedium, textMuted), `FormErrorBanner` when `formError != null`, fields Email (`AutofillHints.email`, email keyboard, next) and Password (`obscure`, `AutofillHints.password`, done → submit), primary `'Sign in'`, footer `'New to $appName? '` + link `'Create account'` → `Routes.signUp`. Fields wrapped in `AutofillGroup`. Field errors appear only after the first submit.
 
-- [ ] **Step 1: Write failing tests** (pump with `FakeAuthRepository`)
+- [x] **Step 1: Write failing tests** (pump with `FakeAuthRepository`)
 
 ```dart
 testWidgets('empty submit shows field errors and does not call auth', …);          // 'Enter your email.', password message; fake.signInCalls isEmpty
@@ -558,10 +558,10 @@ testWidgets('brand panel only at ≥900px', …);                               
 testWidgets('create account link goes to sign-up', …);
 ```
 
-- [ ] **Step 2: Run** — Expected: FAIL.
-- [ ] **Step 3: Implement.**
-- [ ] **Step 4: Run** `flutter test && flutter analyze` — Expected: PASS / no issues.
-- [ ] **Step 5: Commit** — `git commit -m "feat(auth): sign-in screen"`
+- [x] **Step 2: Run** — Expected: FAIL.
+- [x] **Step 3: Implement.**
+- [x] **Step 4: Run** `flutter test && flutter analyze` — Expected: PASS / no issues.
+- [x] **Step 5: Commit** — `git commit -m "feat(auth): sign-in screen"`
 
 ---
 
@@ -578,7 +578,7 @@ testWidgets('create account link goes to sign-up', …);
   - `UsernameField({required TextEditingController controller, String? submitError})` — `RelayTextField(label: 'Username', prefix: Text('@'))`; 400ms after typing stops, if `validateUsername` passes, calls `isUsernameAvailable`; helper `'@<name> is available'` (textMuted with a check icon) or error `'That username is taken.'`. A stale response for an older value is ignored.
   - `SignUpScreen`: `'Create your account'`, `'Pick a username so your friends can find you.'`, fields Name (`AutofillHints.name`), Username, Email, Password (`AutofillHints.newPassword`) + meter + helper `'8+ characters with a letter and a number'`; primary `'Create account'`; footer `'Have an account? '` + `'Sign in'`. If `needsEmailConfirmation`, replace the form with `'Check your inbox'` / `'Confirm your email, then sign in.'` + secondary `'Back to sign in'`. `AuthFailure(usernameTaken)` shows on the username field, not the banner.
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```dart
 testWidgets('strength meter follows the password', …);                  // type 'Relaypass24' → semantics 'Password strength good'
@@ -589,10 +589,10 @@ testWidgets('valid form calls signUp with normalized values', …);        // us
 testWidgets('email confirmation state', …);                              // fake returns needsEmailConfirmation: true → 'Check your inbox'
 ```
 
-- [ ] **Step 2: Run** — Expected: FAIL.
-- [ ] **Step 3: Implement.**
-- [ ] **Step 4: Run** `flutter test && flutter analyze` — Expected: PASS / no issues.
-- [ ] **Step 5: Commit** — `git commit -m "feat(auth): sign-up with username check and password strength"`
+- [x] **Step 2: Run** — Expected: FAIL.
+- [x] **Step 3: Implement.**
+- [x] **Step 4: Run** `flutter test && flutter analyze` — Expected: PASS / no issues.
+- [x] **Step 5: Commit** — `git commit -m "feat(auth): sign-up with username check and password strength"`
 
 ---
 
@@ -607,7 +607,7 @@ testWidgets('email confirmation state', …);                              // fa
 - Consumes: `myProfileProvider`, `profileRepositoryProvider`, `authRepositoryProvider.currentEmail` / `signOut`, `UsernameField`, `AuthFormController`.
 - Produces: `ProfileScreen` — back button (tooltip `'Back'`), title `'Profile'`; `RelayAvatar(size: 72)`; fields Name, Username (`UsernameField`, availability skipped when unchanged), Email (`readOnly`); primary `'Save changes'` (disabled until something changes); secondary `'Sign out'`. Saving success shows a `SnackBar('Profile updated')` and invalidates `myProfileProvider`. Loading state: skeleton blocks in `fillMuted`; load error: `'Couldn’t load your profile.'` + `'Try again'`.
 
-- [ ] **Step 1: Write failing tests**
+- [x] **Step 1: Write failing tests**
 
 ```dart
 testWidgets('shows current profile values', …);                   // display name, username, email from fakes
@@ -618,10 +618,10 @@ testWidgets('sign out calls repository', …);                      // fake.sign
 testWidgets('load error offers retry', …);
 ```
 
-- [ ] **Step 2: Run** — Expected: FAIL.
-- [ ] **Step 3: Implement.**
-- [ ] **Step 4: Run** `flutter test && flutter analyze` — Expected: PASS / no issues.
-- [ ] **Step 5: Commit** — `git commit -m "feat(profile): edit profile and sign out"`
+- [x] **Step 2: Run** — Expected: FAIL.
+- [x] **Step 3: Implement.**
+- [x] **Step 4: Run** `flutter test && flutter analyze` — Expected: PASS / no issues.
+- [x] **Step 5: Commit** — `git commit -m "feat(profile): edit profile and sign out"`
 
 ---
 
@@ -630,11 +630,11 @@ testWidgets('load error offers retry', …);
 **Files:**
 - Modify: `README.md` (replace template text: prerequisites, `supabase start`, run commands per platform with the right env file, test commands)
 
-- [ ] **Step 1: Full automated run**
+- [x] **Step 1: Full automated run**
 
 `supabase db reset && supabase test db && flutter analyze && flutter test && flutter test test_integration --dart-define-from-file=env/local.json`
 Expected: every suite green, `No issues found!`.
 
 - [ ] **Step 2: Manual run on three targets** — web (`flutter run -d chrome --web-port 3000 --dart-define-from-file=env/local.json`), Android emulator (`--dart-define-from-file=env/local.android.json`), iOS simulator (`env/local.json`). On each: sign up a new user → home; profile shows values; edit name → saved; sign out → sign-in; sign back in. Check dark mode once (system setting) and the web brand panel at ≥900 / <900px. Expected: all steps work and no console errors.
 
-- [ ] **Step 3: Commit** — `git commit -m "docs: README for local setup and running Relay"`
+- [x] **Step 3: Commit** — `git commit -m "docs: README for local setup and running Relay"`

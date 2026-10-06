@@ -4,6 +4,28 @@
 > a reduced scope and one adaptive UI. See `docs/superpowers/specs/2026-10-06-group-chat-design.md` →
 > "Decisions after the UI handoff", and the milestone plans in `docs/superpowers/plans/`.
 
+## Where the build stands (2026-10-06)
+
+Read this before the design handoff below. Branch is `m1-foundation`. Milestone 1 is already implemented and committed through `dd85026` (schema, RLS, theme, auth, sign-in, sign-up, profile, README). Do not rebuild it. The app name in Dart is `appName` in `lib/core/constants.dart`.
+
+### Done in the latest session (uncommitted)
+
+- iOS launch images in `ios/Runner/Assets.xcassets/LaunchImage.imageset/` were 1×1 placeholders. They are now the Relay mark (ink rounded square, two white strokes, cobalt dot) at 120, 240, and 360 pixels. `LaunchScreen.storyboard` centers a 120×120 image on white. The imageset `README.md` describes that.
+- Android splash uses the same mark, centered on white: `android/app/src/main/res/drawable/launch_background.xml`, `drawable-v21/launch_background.xml`, and `drawable-{m,h,xh,xxh,xxx}dpi/launch_image.png`.
+- `RelayPalette` implements `==` and `hashCode`. Covered by `test/core/theme/app_theme_test.dart`.
+- Removed the stale Cupertino Icons comment from `pubspec.yaml`.
+- Ran `dart format` on `lib`, `test`, and `test_integration` (7 files reformatted).
+- Checked off the finished steps in `docs/superpowers/plans/2026-10-06-m1-foundation.md`.
+- Marked the housekeeping items done in `docs/superpowers/m1-followups.md` (that file is still untracked).
+- `flutter analyze`: no issues. `flutter test`: 69 passed.
+
+### Still open
+
+- **Manual Milestone 1 pass** (the only unchecked box in the M1 plan, Task 10 step 2). On web, Android, and iOS: sign up → home → profile shows the values → edit the name → saved → sign out → sign in. Also check dark mode once, and the web brand panel at ≥900px and below 900px. Last look: Chrome and a Lenovo tablet (`f27a07dc`) were connected; no iOS simulator was running.
+- **`supabase test db` is red until the local database is reset.** It expects 3 profiles and currently sees 21 left by earlier sign-ups. Run `supabase db reset && supabase test db`. Do not treat that failure as an RLS bug.
+- **Nothing from this session is committed.**
+- **Milestone 2 is not started** and has no plan yet. Chat, media, reactions, and push are still future milestones in the design spec. Deferred M1 review items are in `docs/superpowers/m1-followups.md` (default grants, pgTAP gaps, device-token rebind, last-admin rule, soft-delete body, per-screen auth form state, M3 theme roles, and the "Later" list). Housekeeping in that file is done.
+
 This folder is the design spec for **Relay**, a team chat app for **web, iOS and Android**.
 Build the UI to match it exactly. "Relay" is a working name — rename everywhere via the `APP_NAME` constant.
 

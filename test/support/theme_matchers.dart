@@ -18,9 +18,8 @@ Matcher hasMetrics(
   double controlRadius,
   double iconButtonSize,
   bool circularAvatars,
-) =>
-    isA<RelayMetrics>()
-        .having((m) => m.controlHeight, 'controlHeight', controlHeight)
-        .having((m) => m.controlRadius, 'controlRadius', controlRadius)
-        .having((m) => m.iconButtonSize, 'iconButtonSize', iconButtonSize)
-        .having((m) => m.circularAvatars, 'circularAvatars', circularAvatars);
+) => isA<RelayMetrics>()
+    .having((m) => m.controlHeight, 'controlHeight', controlHeight)
+    .having((m) => m.controlRadius, 'controlRadius', controlRadius)
+    .having((m) => m.iconButtonSize, 'iconButtonSize', iconButtonSize)
+    .having((m) => m.circularAvatars, 'circularAvatars', circularAvatars);

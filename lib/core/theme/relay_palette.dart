@@ -117,29 +117,28 @@ class RelayPalette extends ThemeExtension<RelayPalette> {
     Color? away,
     Color? danger,
     Color? dangerText,
-  }) =>
-      RelayPalette(
-        background: background ?? this.background,
-        surface: surface ?? this.surface,
-        surfaceAlt: surfaceAlt ?? this.surfaceAlt,
-        ink: ink ?? this.ink,
-        onInk: onInk ?? this.onInk,
-        textSecondary: textSecondary ?? this.textSecondary,
-        textMuted: textMuted ?? this.textMuted,
-        textSubtle: textSubtle ?? this.textSubtle,
-        placeholder: placeholder ?? this.placeholder,
-        border: border ?? this.border,
-        borderStrong: borderStrong ?? this.borderStrong,
-        hairline: hairline ?? this.hairline,
-        fillMuted: fillMuted ?? this.fillMuted,
-        accent: accent ?? this.accent,
-        accentStrong: accentStrong ?? this.accentStrong,
-        accentSoft: accentSoft ?? this.accentSoft,
-        online: online ?? this.online,
-        away: away ?? this.away,
-        danger: danger ?? this.danger,
-        dangerText: dangerText ?? this.dangerText,
-      );
+  }) => RelayPalette(
+    background: background ?? this.background,
+    surface: surface ?? this.surface,
+    surfaceAlt: surfaceAlt ?? this.surfaceAlt,
+    ink: ink ?? this.ink,
+    onInk: onInk ?? this.onInk,
+    textSecondary: textSecondary ?? this.textSecondary,
+    textMuted: textMuted ?? this.textMuted,
+    textSubtle: textSubtle ?? this.textSubtle,
+    placeholder: placeholder ?? this.placeholder,
+    border: border ?? this.border,
+    borderStrong: borderStrong ?? this.borderStrong,
+    hairline: hairline ?? this.hairline,
+    fillMuted: fillMuted ?? this.fillMuted,
+    accent: accent ?? this.accent,
+    accentStrong: accentStrong ?? this.accentStrong,
+    accentSoft: accentSoft ?? this.accentSoft,
+    online: online ?? this.online,
+    away: away ?? this.away,
+    danger: danger ?? this.danger,
+    dangerText: dangerText ?? this.dangerText,
+  );
 
   @override
   RelayPalette lerp(ThemeExtension<RelayPalette>? other, double t) {
@@ -168,4 +167,52 @@ class RelayPalette extends ThemeExtension<RelayPalette> {
       dangerText: l(dangerText, other.dangerText),
     );
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is RelayPalette &&
+      other.background == background &&
+      other.surface == surface &&
+      other.surfaceAlt == surfaceAlt &&
+      other.ink == ink &&
+      other.onInk == onInk &&
+      other.textSecondary == textSecondary &&
+      other.textMuted == textMuted &&
+      other.textSubtle == textSubtle &&
+      other.placeholder == placeholder &&
+      other.border == border &&
+      other.borderStrong == borderStrong &&
+      other.hairline == hairline &&
+      other.fillMuted == fillMuted &&
+      other.accent == accent &&
+      other.accentStrong == accentStrong &&
+      other.accentSoft == accentSoft &&
+      other.online == online &&
+      other.away == away &&
+      other.danger == danger &&
+      other.dangerText == dangerText;
+
+  @override
+  int get hashCode => Object.hash(
+    background,
+    surface,
+    surfaceAlt,
+    ink,
+    onInk,
+    textSecondary,
+    textMuted,
+    textSubtle,
+    placeholder,
+    border,
+    borderStrong,
+    hairline,
+    fillMuted,
+    accent,
+    accentStrong,
+    accentSoft,
+    online,
+    away,
+    danger,
+    dangerText,
+  );
 }
