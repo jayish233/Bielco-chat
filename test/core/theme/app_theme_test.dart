@@ -18,6 +18,8 @@ void main() {
     expect(p.accent, const Color(0xFF2B50F5));
     expect(t.scaffoldBackgroundColor, const Color(0xFFFFFFFF));
     expect(t.textTheme.bodyMedium!.fontFamily, 'Geist');
+    expect(t.textTheme.headlineLarge!.fontFamily, 'GeistSemiBold');
+    expect(t.textTheme.labelLarge!.fontFamily, 'GeistMedium');
   });
 
   test('dark palette inverts ground and keeps cobalt', () {

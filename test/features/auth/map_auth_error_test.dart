@@ -67,6 +67,30 @@ void main() {
     );
   });
 
+  test(
+    'company allowlist rejections -> notAllowed (sign-up 403 and token hook)',
+    () {
+      expect(
+        mapAuthError(
+          const AuthApiException(
+            "email_not_allowed: This email isn't on the company list.",
+            statusCode: '403',
+          ),
+        ).code,
+        AuthFailureCode.notAllowed,
+      );
+      expect(
+        mapAuthError(
+          AuthRetryableFetchException(
+            message: 'email_not_allowed: This account no longer has access.',
+            statusCode: '500',
+          ),
+        ).code,
+        AuthFailureCode.notAllowed,
+      );
+    },
+  );
+
   test('unknown keeps the cause', () {
     final err = StateError('boom');
     final f = mapAuthError(err);

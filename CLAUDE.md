@@ -4,27 +4,38 @@
 > a reduced scope and one adaptive UI. See `docs/superpowers/specs/2026-10-06-group-chat-design.md` →
 > "Decisions after the UI handoff", and the milestone plans in `docs/superpowers/plans/`.
 
-## Where the build stands (2026-10-06)
+## Where the build stands (2026-10-07)
 
-Read this before the design handoff below. Branch is `m1-foundation`. Milestone 1 is already implemented and committed through `dd85026` (schema, RLS, theme, auth, sign-in, sign-up, profile, README). Do not rebuild it. The app name in Dart is `appName` in `lib/core/constants.dart`.
+Read this before the design handoff below. Branch `main`. Milestone 1 is committed (`fa03349`). **Milestones 2–4
+(chat, groups, people, invite links, photos/files/voice notes, reactions, reply, edit/delete, read receipts,
+typing, presence) are implemented but not committed yet.** What was built and how it's verified:
+`docs/superpowers/plans/2026-10-07-m2-m4-chat.md`. The app name in Dart is `appName` in `lib/core/constants.dart`.
 
-### Done in the latest session (uncommitted)
-
-- iOS launch images in `ios/Runner/Assets.xcassets/LaunchImage.imageset/` were 1×1 placeholders. They are now the Relay mark (ink rounded square, two white strokes, cobalt dot) at 120, 240, and 360 pixels. `LaunchScreen.storyboard` centers a 120×120 image on white. The imageset `README.md` describes that.
-- Android splash uses the same mark, centered on white: `android/app/src/main/res/drawable/launch_background.xml`, `drawable-v21/launch_background.xml`, and `drawable-{m,h,xh,xxh,xxx}dpi/launch_image.png`.
-- `RelayPalette` implements `==` and `hashCode`. Covered by `test/core/theme/app_theme_test.dart`.
-- Removed the stale Cupertino Icons comment from `pubspec.yaml`.
-- Ran `dart format` on `lib`, `test`, and `test_integration` (7 files reformatted).
-- Checked off the finished steps in `docs/superpowers/plans/2026-10-06-m1-foundation.md`.
-- Marked the housekeeping items done in `docs/superpowers/m1-followups.md` (that file is still untracked).
-- `flutter analyze`: no issues. `flutter test`: 69 passed.
+- **"iOS/macOS app not opening" is fixed.** `main()` no longer throws before `runApp`. A debug
+  `flutter run` without `--dart-define-from-file` uses the local stack (`127.0.0.1:54331`, or
+  `10.0.2.2:54331` on the Android emulator). Release/profile still show `ConfigErrorApp` if the
+  defines are missing. Cursor/VS Code Run configs in `.vscode/launch.json` pass the env file.
+- **Geist looked doubled on iOS** ("Relayout", "Missinging"). Two fixes: name tables now use
+  one family per face, and `pubspec.yaml` registers Regular/Medium/SemiBold as separate families
+  (`Geist`, `GeistMedium`, `GeistSemiBold`) so Impeller cannot paint two faces on one run of
+  text. Do not treat leftover garbled copy as a string bug.
+- **Company-only access (2026-10-07):** only emails in `public.allowed_emails` can sign up / sign in (Auth hooks;
+  list in gitignored `supabase/allowlist.sql`; README "Company allowlist"). The fake test contacts were deleted;
+  the local DB now holds only the owner's account (`krishma939@gmail.com`, username `jayish`). Test suites
+  allowlist their own `@example.com` accounts and delete them afterwards (needs `env/test.json`).
+- **Backend is the local Supabase stack only** (Docker via Colima, API on `127.0.0.1:54331`). Start it with
+  `colima start && supabase start`. No hosted project is linked yet.
+- Checks: `flutter analyze` clean · `flutter test` 107 · `supabase test db` 95 · `test_integration` 22 ·
+  `integration_test` e2e passes on macOS and the iOS simulator.
 
 ### Still open
 
-- **Manual Milestone 1 pass** (the only unchecked box in the M1 plan, Task 10 step 2). On web, Android, and iOS: sign up → home → profile shows the values → edit the name → saved → sign out → sign in. Also check dark mode once, and the web brand panel at ≥900px and below 900px. Last look: Chrome and a Lenovo tablet (`f27a07dc`) were connected; no iOS simulator was running.
-- **`supabase test db` is red until the local database is reset.** It expects 3 profiles and currently sees 21 left by earlier sign-ups. Run `supabase db reset && supabase test db`. Do not treat that failure as an RLS bug.
-- **Nothing from this session is committed.**
-- **Milestone 2 is not started** and has no plan yet. Chat, media, reactions, and push are still future milestones in the design spec. Deferred M1 review items are in `docs/superpowers/m1-followups.md` (default grants, pgTAP gaps, device-token rebind, last-admin rule, soft-delete body, per-screen auth form state, M3 theme roles, and the "Later" list). Housekeeping in that file is done.
+- **Coworker emails:** the user is sending the list → add to `supabase/allowlist.sql` and apply it.
+- **Milestone 5 (push)** — needs the user's Firebase project + Apple Developer account. See the M2–M4 doc.
+- **Commit** the M2–M4 work (nothing from 2026-10-07 is committed).
+- **Hosted Supabase** (`supabase link`, `supabase db push`) and a real `APP_URL` for invite links.
+- Manual pass on web (voice notes, file pick in the browser) and Android (camera, voice).
+- Remaining M1 follow-ups: `docs/superpowers/m1-followups.md`.
 
 This folder is the design spec for **Relay**, a team chat app for **web, iOS and Android**.
 Build the UI to match it exactly. "Relay" is a working name — rename everywhere via the `APP_NAME` constant.

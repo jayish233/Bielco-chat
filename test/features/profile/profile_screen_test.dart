@@ -164,6 +164,15 @@ void main() {
     expect(t.widget<TextField>(_field(0)).controller!.text, 'Ada L');
   });
 
+  testWidgets('load error still lets you sign out (e.g. access revoked)', (
+    t,
+  ) async {
+    final (auth, _) = await _pump(t, loadError: StateError('gone'));
+    await t.tap(find.text('Sign out'));
+    await t.pump();
+    expect(auth.signOutCalls, 1);
+  });
+
   testWidgets('shows skeleton while loading', (t) async {
     final gate = Completer<void>();
     t.view.physicalSize = const Size(600, 1200);

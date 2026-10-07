@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../../../core/app_failure.dart';
 
 import '../../auth/data/supabase_auth_repository.dart' show mapAuthError;
 import '../../auth/domain/auth_failure.dart';
@@ -64,6 +68,44 @@ class SupabaseProfileRepository implements ProfileRepository {
       return res == true;
     } catch (e, st) {
       Error.throwWithStackTrace(mapAuthError(e), st);
+    }
+  }
+
+  @override
+  Future<Profile> uploadAvatar(Uint8List bytes, {required String extension}) =>
+      guard(() async {
+        final uid = _uid;
+        final ext = extension.toLowerCase();
+        // A new name each time, so cached copies of the old avatar don't stick.
+        final path = '$uid/${DateTime.now().millisecondsSinceEpoch}.$ext';
+        final bucket = _client.storage.from('avatars');
+        await bucket.uploadBinary(
+          path,
+          bytes,
+          fileOptions: FileOptions(
+            contentType: ext == 'png' ? 'image/png' : 'image/jpeg',
+          ),
+        );
+        final row = await _client
+            .from('profiles')
+            .update({'avatar_url': bucket.getPublicUrl(path)})
+            .eq('id', uid)
+            .select()
+            .single();
+        return Profile.fromJson(row);
+      });
+
+  @override
+  Future<void> touchLastSeen() async {
+    final uid = _client.auth.currentUser?.id;
+    if (uid == null) return;
+    try {
+      await _client
+          .from('profiles')
+          .update({'last_seen_at': DateTime.now().toUtc().toIso8601String()})
+          .eq('id', uid);
+    } catch (_) {
+      // Best effort; "last seen" is cosmetic.
     }
   }
 }

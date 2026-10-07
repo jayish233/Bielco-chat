@@ -5,6 +5,7 @@ import 'package:chatapp/features/profile/domain/profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'support/chat_fakes.dart';
 import 'support/fakes.dart';
 
 Future<FakeAuthRepository> _pump(WidgetTester t, AuthStatus status) async {
@@ -18,6 +19,7 @@ Future<FakeAuthRepository> _pump(WidgetTester t, AuthStatus status) async {
       overrides: [
         authRepositoryProvider.overrideWithValue(auth),
         profileRepositoryProvider.overrideWithValue(profiles),
+        ...ChatFakes().overrides,
       ],
       child: const RelayApp(),
     ),
@@ -52,5 +54,10 @@ void main() {
     auth.emit(AuthStatus.signedOut);
     await t.pumpAndSettle();
     expect(find.text('Welcome back'), findsOneWidget);
+  });
+
+  testWidgets('signed-in shell re-checks access with the server', (t) async {
+    final auth = await _pump(t, AuthStatus.signedIn);
+    expect(auth.revalidateCalls, 1);
   });
 }

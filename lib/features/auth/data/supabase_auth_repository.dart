@@ -20,6 +20,10 @@ bool _isUsernameConflict(String m) =>
 AuthFailure mapAuthError(Object error) {
   if (error is AuthFailure) return error;
   if (error is AuthException) {
+    // Company allowlist hooks (sign-up and token issue) reject with this tag.
+    if (error.message.contains('email_not_allowed')) {
+      return const AuthFailure(AuthFailureCode.notAllowed);
+    }
     // gotrue reports a DB unique violation (profile trigger) as HTTP 500,
     // which it surfaces as AuthRetryableFetchException: check this first.
     if (_isUsernameConflict(error.message)) {
@@ -137,6 +141,24 @@ class SupabaseAuthRepository implements AuthRepository {
       return SignUpResult(needsEmailConfirmation: res.session == null);
     } catch (e, st) {
       Error.throwWithStackTrace(mapAuthError(e), st);
+    }
+  }
+
+  @override
+  Future<void> revalidate() async {
+    if (_auth.currentSession == null) return;
+    try {
+      await _auth.refreshSession();
+    } on AuthApiException {
+      // 4xx: access revoked (allowlist hook), user deleted, token invalid.
+      await _auth.signOut(scope: SignOutScope.local);
+    } on AuthRetryableFetchException catch (e) {
+      // The token hook's rejection can surface as a 5xx; only act on that.
+      if (e.message.contains('email_not_allowed')) {
+        await _auth.signOut(scope: SignOutScope.local);
+      }
+    } catch (_) {
+      // Offline etc.: keep the session; we'll check again later.
     }
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/app_failure.dart';
 import '../../../core/providers.dart';
 import '../../../core/router.dart';
 import '../../../core/theme/app_theme.dart';
@@ -14,6 +15,7 @@ import '../../auth/domain/auth_failure.dart';
 import '../../auth/domain/validators.dart';
 import '../../auth/ui/auth_form_controller.dart';
 import '../../auth/ui/username_field.dart';
+import '../../chat/ui/media_picker.dart' show pickAvatar;
 import '../domain/profile.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -64,6 +66,13 @@ class ProfileScreen extends ConsumerWidget {
                       label: 'Try again',
                       variant: RelayButtonVariant.secondary,
                       onPressed: () => ref.invalidate(myProfileProvider),
+                    ),
+                    const SizedBox(height: RelaySpace.s3),
+                    RelayButton(
+                      label: 'Sign out',
+                      variant: RelayButtonVariant.secondary,
+                      onPressed: () =>
+                          ref.read(authRepositoryProvider).signOut(),
                     ),
                   ],
                 ),
@@ -153,6 +162,26 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
     super.dispose();
   }
 
+  bool _uploading = false;
+
+  Future<void> _changePhoto() async {
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final picked = await pickAvatar();
+      if (picked == null) return;
+      setState(() => _uploading = true);
+      await ref
+          .read(profileRepositoryProvider)
+          .uploadAvatar(picked.bytes, extension: picked.extension);
+      ref.invalidate(myProfileProvider);
+      messenger.showSnackBar(const SnackBar(content: Text('Photo updated')));
+    } catch (e) {
+      messenger.showSnackBar(SnackBar(content: Text(mapAppError(e).message)));
+    } finally {
+      if (mounted) setState(() => _uploading = false);
+    }
+  }
+
   bool get _nameChanged => _name.text.trim() != _baseName;
   bool get _usernameChanged =>
       normalizeUsername(_username.text) != _baseUsername;
@@ -210,7 +239,14 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
           child: RelayAvatar(
             name: _name.text.trim().isEmpty ? p.displayName : _name.text,
             seed: p.id,
+            imageUrl: p.avatarUrl,
             size: 72,
+          ),
+        ),
+        Align(
+          child: TextButton(
+            onPressed: _uploading || form.submitting ? null : _changePhoto,
+            child: Text(_uploading ? 'Uploading…' : 'Change photo'),
           ),
         ),
         const SizedBox(height: RelaySpace.s6),
@@ -255,9 +291,11 @@ class _ProfileFormState extends ConsumerState<_ProfileForm> {
           variant: RelayButtonVariant.secondary,
           onPressed: form.submitting
               ? null
-              : () => ref
-                    .read(authFormControllerProvider.notifier)
-                    .run(() => ref.read(authRepositoryProvider).signOut()),
+              : () =>
+                    ref.read(authFormControllerProvider.notifier).run(() async {
+                      await ref.read(profileRepositoryProvider).touchLastSeen();
+                      await ref.read(authRepositoryProvider).signOut();
+                    }),
         ),
       ],
     );

@@ -23,4 +23,9 @@ abstract interface class AuthRepository {
   });
 
   Future<void> signOut();
+
+  /// Re-checks the session with the server (forces a token refresh). Signs
+  /// out locally if the account was removed from the company list or
+  /// deleted. Network failures are ignored.
+  Future<void> revalidate();
 }

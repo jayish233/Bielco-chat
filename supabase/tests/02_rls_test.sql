@@ -62,7 +62,9 @@ select throws_ok($$update conversation_members set role = 'admin' where user_id 
 select is(public.t_rows_affected($q$delete from conversation_members where conversation_id = '00000000-0000-0000-0000-0000000000c1' and user_id = '00000000-0000-0000-0000-000000000001'$q$), 0::bigint, 'member cannot remove others');
 select is(public.t_rows_affected($q$update profiles set display_name = 'x' where id = '00000000-0000-0000-0000-000000000001'$q$), 0::bigint, 'cannot edit others profile');
 select is((select count(*) from device_tokens where user_id = '00000000-0000-0000-0000-000000000001'), 0::bigint, 'cannot read others device tokens');
-select is((select count(*) from profiles), 3::bigint, 'authenticated users read all profiles');
+select is((select count(*) from profiles where id in (
+  '00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000003')),
+  3::bigint, 'authenticated users read all profiles');
 select throws_ok($$insert into message_reactions (message_id, user_id, emoji) values ('00000000-0000-0000-0000-0000000000a3', '00000000-0000-0000-0000-000000000002', '👍')$$, '42501', null, 'cannot react outside your conversations');
 
 -- as A (sender/admin) -----------------------------------------------------------

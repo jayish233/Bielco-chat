@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:chatapp/features/auth/data/auth_repository.dart';
 import 'package:chatapp/features/auth/domain/auth_failure.dart';
@@ -78,6 +79,11 @@ class FakeAuthRepository implements AuthRepository {
     return signUpResult;
   }
 
+  int revalidateCalls = 0;
+
+  @override
+  Future<void> revalidate() async => revalidateCalls++;
+
   @override
   Future<void> signOut() async {
     signOutCalls++;
@@ -140,4 +146,19 @@ class FakeProfileRepository implements ProfileRepository {
     if (gate != null) return gate.future;
     return !takenUsernames.contains(value);
   }
+
+  int avatarUploads = 0;
+  int lastSeenTouches = 0;
+
+  @override
+  Future<Profile> uploadAvatar(
+    Uint8List bytes, {
+    required String extension,
+  }) async {
+    avatarUploads++;
+    return profile = profile!.copyWith(avatarUrl: 'https://x/a.$extension');
+  }
+
+  @override
+  Future<void> touchLastSeen() async => lastSeenTouches++;
 }

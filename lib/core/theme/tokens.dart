@@ -71,5 +71,21 @@ abstract final class RelayRadius {
 
 abstract final class RelayFonts {
   static const String sans = 'Geist';
+  static const String sansMedium = 'GeistMedium';
+  static const String sansSemiBold = 'GeistSemiBold';
   static const String mono = 'GeistMono';
+  static const String monoMedium = 'GeistMonoMedium';
+
+  /// One file per family so iOS/Impeller cannot paint Regular under a
+  /// heavier face (that doubled every glyph as "Relayout" / "Emaill").
+  static String sansFor(FontWeight weight) {
+    if (weight.value >= 600) return sansSemiBold;
+    if (weight.value >= 500) return sansMedium;
+    return sans;
+  }
+
+  static String monoFor(FontWeight weight) {
+    if (weight.value >= 500) return monoMedium;
+    return mono;
+  }
 }

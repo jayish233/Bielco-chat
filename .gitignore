@@ -54,3 +54,7 @@ supabase/.temp
 # Local env (dart-define files)
 env/*.json
 !env/example.json
+!env/test.example.json
+
+# Company email allowlist (personal data; keep out of git)
+supabase/allowlist.sql

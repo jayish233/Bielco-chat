@@ -8,6 +8,8 @@ import 'package:chatapp/features/profile/data/supabase_profile_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'support/test_admin.dart';
+
 const _pw = 'relaypass24';
 
 SupabaseClient _client([String? url]) => SupabaseClient(
@@ -28,6 +30,11 @@ String _s() {
 }
 
 void main() {
+  final admin = TestAdmin();
+  setUpAll(admin.sweepLeftovers);
+  tearDown(admin.cleanUp);
+  tearDownAll(admin.dispose);
+
   late SupabaseClient client;
   late SupabaseAuthRepository auth;
   late SupabaseProfileRepository profiles;
@@ -41,7 +48,7 @@ void main() {
 
   Future<({String email, String username})> register([String? username]) async {
     final n = _n();
-    final email = 'm1-$n@example.com';
+    final email = await admin.allowedEmail('m1');
     final u = username ?? 'user_${_s()}';
     await auth.signUp(
       email: email,
@@ -55,8 +62,9 @@ void main() {
   test('signUp signs in and creates the profile', () async {
     final n = _n();
     final s = _s();
+    final email = await admin.allowedEmail('m1');
     final res = await auth.signUp(
-      email: ' m1-$n@example.com ',
+      email: ' $email ',
       password: _pw,
       username: '@Priya_$s',
       displayName: 'Priya $n',
@@ -64,7 +72,7 @@ void main() {
     expect(res.needsEmailConfirmation, isFalse);
     expect(auth.currentStatus, AuthStatus.signedIn);
     expect(auth.currentUserId, isNotNull);
-    expect(auth.currentEmail, 'm1-$n@example.com');
+    expect(auth.currentEmail, email);
     final p = await profiles.fetchMyProfile();
     expect(p.username, 'priya_$s');
     expect(p.displayName, 'Priya $n');
@@ -92,7 +100,7 @@ void main() {
       await auth.signOut();
       await expectLater(
         auth.signUp(
-          email: 'm1-${_n()}@example.com',
+          email: await admin.allowedEmail('m1'),
           password: _pw,
           username: 'Priya_X$s',
           displayName: 'Dup',
@@ -163,14 +171,14 @@ void main() {
       final other = _client();
       addTearDown(other.dispose);
       await other.auth.signUp(
-        email: 'm1-${_n()}@example.com',
+        email: await admin.allowedEmail('m1'),
         password: _pw,
         data: {'username': name, 'display_name': 'First'},
       );
       Object? error;
       try {
         await client.auth.signUp(
-          email: 'm1-${_n()}@example.com',
+          email: await admin.allowedEmail('m1'),
           password: _pw,
           data: {'username': name, 'display_name': 'Second'},
         );
@@ -181,4 +189,37 @@ void main() {
       expect(mapAuthError(error!).code, AuthFailureCode.usernameTaken);
     },
   );
+
+  test('email not on the company list -> notAllowed, no account', () async {
+    await expectLater(
+      auth.signUp(
+        email: 'outsider-${_n()}@example.com',
+        password: _pw,
+        username: 'out_${_s()}',
+        displayName: 'Outsider',
+      ),
+      _failure(AuthFailureCode.notAllowed),
+    );
+    expect(auth.currentStatus, AuthStatus.signedOut);
+  });
+
+  test('removed from the list -> sign-in notAllowed', () async {
+    final u = await register();
+    await auth.signOut();
+    await admin.disallow(u.email);
+    await expectLater(
+      auth.signIn(email: u.email, password: _pw),
+      _failure(AuthFailureCode.notAllowed),
+    );
+  });
+
+  test('revalidate signs out someone removed from the list', () async {
+    final u = await register();
+    expect(auth.currentStatus, AuthStatus.signedIn);
+    await auth.revalidate();
+    expect(auth.currentStatus, AuthStatus.signedIn, reason: 'still listed');
+    await admin.disallow(u.email);
+    await auth.revalidate();
+    expect(auth.currentStatus, AuthStatus.signedOut);
+  });
 }

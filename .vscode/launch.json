@@ -1,0 +1,27 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Relay (web, iOS simulator, macOS)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define-from-file=env/local.json"]
+    },
+    {
+      "name": "Relay (web on port 3000)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "deviceId": "chrome",
+      "args": ["--web-port", "3000", "--dart-define-from-file=env/local.json"]
+    },
+    {
+      "name": "Relay (Android emulator)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": ["--dart-define-from-file=env/local.android.json"]
+    }
+  ]
+}

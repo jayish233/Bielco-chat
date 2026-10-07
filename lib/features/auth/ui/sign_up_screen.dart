@@ -162,9 +162,11 @@ class _SignUpScreenState extends ConsumerState<SignUpScreen> {
                     ),
                     const SizedBox(height: RelaySpace.s4),
                     RelayTextField(
-                      label: 'Email',
+                      label: 'Work email',
                       controller: _email,
                       errorText: emailError,
+                      helperText:
+                          'Use the email your admin added to the company list.',
                       autocorrect: false,
                       keyboardType: TextInputType.emailAddress,
                       autofillHints: const [AutofillHints.email],
