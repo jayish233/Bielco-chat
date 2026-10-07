@@ -24,6 +24,10 @@ AuthFailure mapAuthError(Object error) {
     if (error.message.contains('email_not_allowed')) {
       return const AuthFailure(AuthFailureCode.notAllowed);
     }
+    if (error.code == 'over_email_send_rate_limit' ||
+        error.message.contains('email rate limit exceeded')) {
+      return const AuthFailure(AuthFailureCode.emailRateLimited);
+    }
     // gotrue reports a DB unique violation (profile trigger) as HTTP 500,
     // which it surfaces as AuthRetryableFetchException: check this first.
     if (_isUsernameConflict(error.message)) {
@@ -46,6 +50,8 @@ AuthFailure mapAuthError(Object error) {
         return const AuthFailure(AuthFailureCode.weakPassword);
       case 'email_not_confirmed':
         return const AuthFailure(AuthFailureCode.emailNotConfirmed);
+      case 'over_email_send_rate_limit':
+        return const AuthFailure(AuthFailureCode.emailRateLimited);
     }
     if (error is AuthWeakPasswordException) {
       return const AuthFailure(AuthFailureCode.weakPassword);

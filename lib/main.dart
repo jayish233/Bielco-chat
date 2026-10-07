@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -9,6 +10,7 @@ import 'core/ui/config_error_app.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final env = resolveEnv();
+  if (kDebugMode) debugPrint('Relay Supabase URL: ${env.url}');
   try {
     checkEnv(url: env.url, anonKey: env.anonKey);
   } on StateError catch (e) {

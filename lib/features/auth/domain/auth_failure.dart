@@ -4,6 +4,7 @@ enum AuthFailureCode {
   usernameTaken,
   weakPassword,
   emailNotConfirmed,
+  emailRateLimited,
 
   /// The email isn't on the company allowlist (or was removed from it).
   notAllowed,
@@ -27,6 +28,8 @@ class AuthFailure implements Exception {
       'Use 8+ characters with a letter and a number.',
     AuthFailureCode.emailNotConfirmed =>
       'Confirm your email first — check your inbox.',
+    AuthFailureCode.emailRateLimited =>
+      'Too many sign-up emails. Wait a few minutes, or turn off Confirm email in the Supabase dashboard.',
     AuthFailureCode.notAllowed =>
       'Relay is for company accounts only. Ask your admin to add your email.',
     AuthFailureCode.network =>

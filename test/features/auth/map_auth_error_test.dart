@@ -58,6 +58,16 @@ void main() {
       AuthFailureCode.emailNotConfirmed,
     );
     expect(
+      code(
+        const AuthApiException(
+          'email rate limit exceeded',
+          statusCode: '429',
+          code: 'over_email_send_rate_limit',
+        ),
+      ),
+      AuthFailureCode.emailRateLimited,
+    );
+    expect(
       code(const AuthException('x', code: 'invalid_credentials')),
       AuthFailureCode.invalidCredentials,
     );
